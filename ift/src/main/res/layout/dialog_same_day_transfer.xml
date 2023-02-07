@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginTop="?attr/ras_components_themeSpacingNormal"
+        android:text="Same day transfer"
+        android:textColor="@color/ras_components_bb_color_grey_800"
+        android:textSize="?attr/ras_components_themeTextSizeHeader3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:ras_components_textWeight="semi_bold" />
+
+    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+        android:id="@+id/tv_description_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginTop="?attr/ras_components_themeSpacingSmall"
+        android:text="We are closed for complimentary same day payments for the day. A transaction fee of $0.50 will be charged. "
+        android:textColor="@color/ras_components_bb_color_grey_700"
+        android:textSize="?attr/ras_components_themeTextSizeBodyNormal"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <com.redairship.ocbc.bb.components.views.buttons.BBSecondaryButton
+        android:id="@+id/bt_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginVertical="?attr/ras_components_themeSpacingLarge"
+        android:layout_marginTop="?attr/ras_components_themeSpacingLarge"
+        android:layout_marginBottom="?attr/ras_components_themeSpacingLarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_proceed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_description_1"
+        app:ras_components_label="Cancel" />
+
+    <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
+        android:id="@+id/bt_proceed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginVertical="?attr/ras_components_themeSpacingLarge"
+        android:layout_marginTop="?attr/ras_components_themeSpacingLarge"
+        android:layout_marginBottom="?attr/ras_components_themeSpacingLarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bt_cancel"
+        app:layout_constraintTop_toBottomOf="@id/tv_description_1"
+        app:ras_components_label="Proceed" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

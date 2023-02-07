@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="review_add_as_payee" tools:ignore="ResourceName">Add as payee</string>
+    <string name="next_text">Next</string>
+    <string name="search_text">Search</string>
+    <string name="out_of_date_update_buttontitle">Okay</string>
+    <string name="fx_rate_symbol">FX Rate: </string>
+    <string name="contract_no">Contract No.</string>
+    <string name="done_btn">Done</string>
+    <string name="header_btn_logout">Logout</string>
+    <string name="transfer_to">Transfer To</string>
+    <string name="please_select">Please select</string>
+    <string name="local_transfer">Local Transfer</string>
+    <string name="your_reference_number">Your Reference Number</string>
+    <string name="remarks_text">Remarks:</string>
+    <string name="approval_subheader_internal_transfer_own_acct">Internal Fund Transfer</string>
+    <string name="value_date">Value Date</string>
+    <string name="frequently_used">Frequently Used</string>
+    <string name="others">Others</string>
+    <string name="amount_smaller_than">Transaction Amount cannot be smaller than %1$s</string>
+    <string name="amount_greater_than">Transaction Amount cannot be greater than %1$s</string>
+    <string name="transaction_amount_not_exceed">Transaction Amount cannot exceed %1$s MYR</string>
+    <string name="service_generic_err_mutiple_login_title">Sorry, we can\'t process your request.</string>
+
+    <string name="transfer_to_lowercase">Transfer to</string>
+    <string name="account_currencies">Available Currencies</string>
+    <string name="transfer_from">Transfer from</string>
+    <string name="hide_balance">Hide balance</string>
+    <string name="show_balance">Show balance</string>
+    <string name="account_details">Account details</string>
+    <string name="remarks_optional">Note for payee (Optional)</string>
+    <string name="this_will_appear_on_payees_online_statement">This will appear on payee’s online statement</string>
+    <string name="your_reference_number_optional">Your statement reference (optional)</string>
+    <string name="send_singapore_dollar_local_currency_instead">Send Singapore Dollar (SGD), local currency instead</string>
+    <string name="indicative_rate_percentage">Indicative rate: </string>
+    <string name="use_my_rate"><u>Use my rates</u></string>
+    <string name="edit_fx_rate"><u>Edit FX rate</u></string>
+    <string name="available_text">available</string>
+    <string name="send_money">Send %s</string>
+    <string name="new_transfer">New transfer</string>
+    <string name="track_your_transfers_in">Track your transfers in status inquiry</string>
+    <string name="you_have_send_to">You have sent\n%s %s to</string>
+    <string name="processing_your_payment">Processing your payment...</string>
+    <string name="insufficient_balance_description">You have insufficient balance in your account. To proceed with the transfer, please select another account to pay from or risk having your payment rejected.</string>
+    <string name="change_account">Change Account</string>
+    <string name="insufficient_balance">Insufficient Balance</string>
+    <string name="tap_to_share_success_of_this_transfer">Tap to share success of this transfer with your payee.</string>
+    <string name="select_currency">Select currency</string>
+    <string name="you_send">You send</string>
+    <string name="recipient_gets">Recipient gets</string>
+    <string name="stay_on_top_of_your_transfer">Stay on top of your transfers</string>
+
+
+</resources>

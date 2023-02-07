@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ras_components_bb_color_transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/v_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/ras_dashboard_bg_rounded_top"
+        android:minHeight="20dp"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/v_handle"
+            android:layout_width="?attr/ras_components_themeBottomSheetHandleWidth"
+            android:layout_height="?attr/ras_components_themeBottomSheetHandleHeight"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="?attr/ras_components_themeSpacingSmall"
+            android:background="@drawable/ras_components_bg_bb_bottom_sheet_handle" />
+
+        <LinearLayout
+            android:id="@+id/v_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/ras_components_themeColorBottomSheetBackground"
+            android:orientation="horizontal"></LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/body_detail_lly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ras_components_bb_color_white"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/ras_components_bb_spacing_very_large">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@id/bt_next"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/detail_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:text="@string/transfer_from"
+                    android:textColor="@color/ras_components_bb_color_grey_600"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+
+                    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                        android:id="@+id/transferfrom_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/transferfrom_change"
+                            android:text="accountName"
+                        android:textColor="@color/ras_components_bb_color_grey_900"
+                        android:textSize="@dimen/ras_components_bb_spacing_normal" />
+
+                    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                        android:id="@+id/transferfrom_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="4dp"
+                            android:text="Change"
+                        android:textColor="#0084FF"
+                        android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+                </RelativeLayout>
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/transferfrom_account_desp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="accountDesp"
+                    android:textColor="@color/ras_components_bb_color_grey_500"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_very_large"
+                    android:text="@string/value_date"
+                    android:textColor="@color/ras_components_bb_color_grey_600"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/tvValueDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:drawableRight="@drawable/ras_icon_calendar"
+                    android:text="accountName"
+                    android:textColor="@color/ras_components_bb_color_grey_900"
+                    android:textSize="@dimen/ras_components_bb_spacing_normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@color/ras_components_bb_color_grey_300" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/sameday_tf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_marginRight="@dimen/size_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/round_corner_white_button"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="Same Day(FAST)"
+                        android:textColor="@color/ras_components_bb_color_grey_700"
+                        android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+
+                    <RadioButton
+                        android:id="@+id/within_three_days_tf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_marginLeft="@dimen/size_10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/round_corner_white_button"
+                        android:button="@null"
+                        android:enabled="true"
+                        android:gravity="center"
+                        android:text="Within 3 Days(GIRO)"
+                        android:textColor="@color/ras_components_bb_color_grey_700"
+                        android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+                </RadioGroup>
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBTextField
+                    android:id="@+id/tf_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_very_large"
+                    app:ras_components_label="@string/remarks_optional"
+                    app:ras_components_text="Invoice123456" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/desp_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0 / 16"
+                    android:textColor="@color/ras_components_bb_color_grey_500"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBTextField
+                    android:id="@+id/tf_reference_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_very_large"
+                    app:ras_components_label="@string/your_reference_number_optional"
+                    app:ras_components_text="Invoice123456789" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/desp_reference_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0 / 140"
+                    android:textColor="@color/ras_components_bb_color_grey_500"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                    android:id="@+id/review_from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/ras_components_bb_color_grey_600"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                    app:ras_components_description="test"
+                    app:ras_components_title="From" />
+
+                <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                    android:id="@+id/review_valuedate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                    android:textColor="@color/ras_components_bb_color_grey_600"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                    app:ras_components_description="test"
+                    app:ras_components_title="@string/value_date" />
+
+                <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                    android:id="@+id/review_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                    android:textColor="@color/ras_components_bb_color_grey_600"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                    app:ras_components_description="test"
+                    app:ras_components_title="@string/remarks_text" />
+
+                <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                    android:id="@+id/review_reference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                    android:textColor="@color/ras_components_bb_color_grey_600"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                    app:ras_components_description="test"
+                    app:ras_components_title="@string/your_reference_number" />
+
+                <RelativeLayout
+                    android:id="@+id/lly_addaspayee"
+                    android:layout_width="match_parent"
+                    android:layout_height="73dp"
+                    android:layout_marginTop="32dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F5f5f5" />
+
+                    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                        android:id="@+id/review_tv_add_aspayee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                            android:text="@string/review_add_as_payee"
+                        android:textColor="@color/ras_components_bb_color_grey_700"
+                        android:textSize="@dimen/ras_components_bb_spacing_normal"
+                        app:ras_components_textWeight="semi_bold" />
+
+                    <ImageView
+                        android:id="@+id/chk_addaspayee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:button="@null"
+                        android:src="@drawable/ras_passportauth_ic_checkbox_unchecked" />
+                </RelativeLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
+            android:id="@+id/bt_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="?attr/ras_components_themeSpacingLarge"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:ras_components_label="@string/next_text" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bbm-onetoken-offline.iml" filepath="$PROJECT_DIR$/.idea/modules/bbm-onetoken-offline.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/bbm-onetoken-offline.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/bbm-onetoken-offline.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/bbm-onetoken-offline.domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/bbm-onetoken-offline.domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/bbm-onetoken-offline.domain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/bbm-onetoken-offline.domain.test.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/bbm-onetoken-offline.domain.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/onetokenoffline/bbm-onetoken-offline.onetokenoffline.iml" filepath="$PROJECT_DIR$/.idea/modules/onetokenoffline/bbm-onetoken-offline.onetokenoffline.iml" />
+    </modules>
+  </component>
+</project>

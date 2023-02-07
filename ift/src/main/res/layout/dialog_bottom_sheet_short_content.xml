@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_behavior_id"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone"
+    app:behavior_hideable="true"
+    app:behavior_draggable="false"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:id="@+id/v_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/ras_components_themeBottomSheetHeaderMinHeight"
+        android:background="@drawable/ras_dashboard_bg_rounded_top"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <View
+            android:id="@+id/v_handle"
+            android:layout_width="?attr/ras_components_themeBottomSheetHandleWidth"
+            android:layout_height="?attr/ras_components_themeBottomSheetHandleHeight"
+            android:layout_marginTop="?attr/ras_components_themeSpacingSmall"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ras_components_bg_bb_bottom_sheet_handle"/>
+
+        <LinearLayout
+            android:id="@+id/v_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="?attr/ras_components_themeColorBottomSheetBackground">
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ras_components_bb_color_white"
+        android:paddingStart="@dimen/ras_components_bb_spacing_very_large"
+        android:paddingEnd="@dimen/ras_components_bb_spacing_very_large"
+        android:paddingBottom="@dimen/ras_components_bb_spacing_very_large">
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/bottomsheet_title"
+            style="@style/ras_components_BBBottomSheetHeaderTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="@dimen/ras_components_bb_spacing_normal"
+            android:textColor="@color/ras_components_bb_color_grey_800"
+            app:ras_components_textWeight="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="@dimen/ras_components_bb_spacing_normal"
+            tools:text="Title" />
+
+        <RelativeLayout
+            android:id="@+id/bottomsheet_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_very_large"
+            app:layout_constraintTop_toBottomOf="@id/bottomsheet_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:overlapAnchor="false"
+                android:dropDownWidth="match_parent"
+                android:popupBackground="@drawable/backgroud_spinner"
+                android:popupElevation="0px"/>
+
+            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                android:id="@+id/bottomsheet_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="16sp"
+                android:textColor="@color/ras_components_bb_color_grey_900"
+                android:background="@color/ras_components_bb_color_white"
+                android:gravity="center_vertical"
+                android:overlapAnchor="false"
+                android:popupElevation="0px"
+                android:spinnerMode="dropdown"/>
+
+            <ImageView
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/ic_arrow_down" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:background="@color/ras_components_bb_color_grey_300"
+                android:layout_below="@id/bottomsheet_desc"/>
+        </RelativeLayout>
+
+        <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
+            android:id="@+id/bottomsheet_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_very_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomsheet_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:ras_components_label="@string/next_text"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,0 +1,45 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#33F9CDD0"
+    tools:background="@color/ras_components_bb_color_grey_600"
+    android:padding="@dimen/ras_components_bb_text_size_16_sp"
+    android:layout_height="match_parent">
+
+    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+        android:id="@+id/tv_amount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ras_components_bb_color_white"
+        android:textSize="@dimen/ras_components_bb_text_size_12_sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:ras_components_textWeight="regular"
+        tools:text="Amount" />
+
+    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansEditText
+        android:id="@+id/tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ras_components_bb_color_white"
+        android:textSize="@dimen/ras_components_bb_text_size_16_sp"
+        android:background="@null"
+        app:layout_constraintTop_toBottomOf="@+id/tv_amount_label"
+        app:ras_components_textWeight="bold"
+        tools:text="123456.78" />
+
+    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+        android:id="@+id/tv_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/ras_components_bb_color_white"
+        android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_amount"
+        app:ras_components_textWeight="regular"
+        android:drawablePadding="@dimen/ras_components_bb_spacing_extreme_small"
+        android:drawableEnd="@drawable/ras_components_ic_bb_chevron_down_thick_light"
+        tools:text="SGD" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

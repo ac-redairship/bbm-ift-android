@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/ras_components_bb_spacing_large">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.06" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/rounded_corner_20dp_white_shadow"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        app:layout_constraintBottom_toBottomOf="@id/confirm_body">
+    </View>
+    <ImageView
+        android:id="@+id/img_green_tick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/acknowledgement_tick"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+    <LinearLayout
+        android:id="@+id/confirm_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
+        app:layout_constraintTop_toBottomOf="@id/img_green_tick">
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_confirm_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/you_have_send_to"
+            app:ras_components_textWeight="bold"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/size_20sp"
+            android:textColor="@color/ras_components_bb_color_grey_900"/>
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_sendto_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Sandy Chua"
+            app:ras_components_textWeight="bold"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/ras_components_bb_spacing_normal"
+            android:textColor="@color/ras_components_bb_color_grey_900"/>
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_sendto_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1234-04950-001 - United Overseas Bank Pte Ltd"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+            android:textColor="@color/ras_components_bb_color_grey_700"/>
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_share_transfer_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="7dp"
+            android:drawableLeft="@drawable/icon_share"
+            android:text="Share transfer details"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+            android:textColor="#0084FF"/>
+
+        <ImageView
+            android:id="@+id/chk_extendbody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="@dimen/ras_components_bb_spacing_large"
+            android:src="@drawable/ras_components_ic_bb_chevron_down_thick" />
+
+        <LinearLayout
+            android:id="@+id/detail_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                android:id="@+id/indicativeAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ras_components_title="Indicative amount"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                android:textColor="@color/ras_components_bb_color_grey_600"
+                app:ras_components_description="test"
+                app:ras_components_textWeight="semi_bold"/>
+
+            <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                android:id="@+id/indicativeRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ras_components_title="Indicative rate"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                android:textColor="@color/ras_components_bb_color_grey_600"
+                app:ras_components_description="test"
+                app:ras_components_textWeight="semi_bold"/>
+
+            <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                android:id="@+id/confirm_fromaccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ras_components_title="From Account"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                android:textColor="@color/ras_components_bb_color_grey_600"
+                app:ras_components_description="test"
+                app:ras_components_textWeight="semi_bold"/>
+
+            <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                android:id="@+id/confirm_valueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                app:ras_components_title="@string/value_date"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                android:textColor="@color/ras_components_bb_color_grey_600"
+                app:ras_components_description="test"
+                app:ras_components_textWeight="semi_bold"/>
+
+            <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                android:id="@+id/confirm_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                app:ras_components_title="@string/remarks_text"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                android:textColor="@color/ras_components_bb_color_grey_600"
+                app:ras_components_description="test"
+                app:ras_components_textWeight="semi_bold"/>
+
+            <com.redairship.ocbc.bb.components.views.rows.BBStandardRow
+                android:id="@+id/confirm_reference"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                app:ras_components_title="@string/your_reference_number"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                android:textColor="@color/ras_components_bb_color_grey_600"
+                app:ras_components_description="test"
+                app:ras_components_textWeight="semi_bold"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/ras_components_bb_spacing_very_large"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_bottomOfBody"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/ras_components_bb_color_transparent"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

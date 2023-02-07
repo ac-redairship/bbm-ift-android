@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/v_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ras_default_bg"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true">
+
+    <com.redairship.ocbc.bb.components.views.headers.BBStandardHeader
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ras_components_bb_color_transparent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:ras_components_showDivider="false"
+        app:ras_components_showEndButton="false"
+        app:ras_components_thinIcon="close"
+        tools:layout_height="48dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
+        android:clipChildren="true"
+        android:clipToPadding="false">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingHorizontal="32dp"
+                android:paddingBottom="24dp">
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Use my rates"
+                    android:textColor="@color/ras_components_bb_color_grey_900"
+                    android:textSize="@dimen/ras_components_bb_text_size_26_sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:ras_components_textWeight="bold" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Transaction amount:"
+                    android:textColor="@color/ras_components_bb_color_grey_900"
+                    android:textSize="@dimen/ras_components_bb_text_size_26_sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:ras_components_textWeight="regular" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/tv_transaction_amount_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Transaction amount:"
+                    android:textColor="@color/ras_components_bb_color_grey_700"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:ras_components_textWeight="regular" />
+
+                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                    android:id="@+id/tv_transaction_amount_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_small"
+                    android:text="1,000.00 USD"
+                    android:textColor="@color/ras_components_bb_color_grey_700"
+                    android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:ras_components_textWeight="regular" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
+                        android:orientation="vertical">
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1,000.00 USD available"
+                            android:textSize="@dimen/ras_components_bb_text_size_16_sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="semi_bold" />
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 USD = 1.5643 SGD"
+                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="regular" />
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                            android:text="Value Date: 27 Jan 2023"
+                            android:textColor="@color/ras_components_bb_color_grey_700"
+                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="regular" />
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Reference No: 35568625"
+                            android:textColor="@color/ras_components_bb_color_grey_700"
+                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="regular" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ras_passportauth_ic_checkbox_checked" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2,150.00 USD available"
+                            android:textSize="@dimen/ras_components_bb_text_size_16_sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="semi_bold" />
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 USD = 1.5565 SGD"
+                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="regular" />
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                            android:text="Value Date: 27 Jan 2023"
+                            android:textColor="@color/ras_components_bb_color_grey_700"
+                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="regular" />
+
+                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Reference No: 35568625"
+                            android:textColor="@color/ras_components_bb_color_grey_700"
+                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:ras_components_textWeight="regular" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ras_passportauth_ic_checkbox_unchecked" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
+            android:id="@+id/btn_cta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="?attr/ras_components_themeSpacingLarge"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:ras_components_label="Use rate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
