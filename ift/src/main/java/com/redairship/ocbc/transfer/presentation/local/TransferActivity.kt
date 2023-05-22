@@ -1,4 +1,4 @@
-package com.ocbc.transfer.presentation.local
+package com.redairship.ocbc.transfer.presentation.local
 
 import android.graphics.Color
 import android.os.Build
@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import com.ocbc.transfer.R
 import com.ocbc.transfer.databinding.ActivityTransferLocalRevampBinding
 import com.redairship.ocbc.bb.components.views.fragments.errors.GenericServerErrorFragment
-
 
 class TransferActivity : AppCompatActivity(), GenericServerErrorFragment.Listener {
 
@@ -30,7 +29,7 @@ class TransferActivity : AppCompatActivity(), GenericServerErrorFragment.Listene
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                setDecorFitsSystemWindows(false)
+                setDecorFitsSystemWindows(true)
             }
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             statusBarColor = Color.TRANSPARENT
@@ -40,7 +39,7 @@ class TransferActivity : AppCompatActivity(), GenericServerErrorFragment.Listene
     var fragment:GenericServerErrorFragment? = null
 
     fun showGenericServerErrorScreen(message:String?) {
-        dataBinding.vRoot.isVisible = true
+        dataBinding.vMainRoot.isVisible = true
 
         val tag = GenericServerErrorFragment::class.java.simpleName
         fragment = GenericServerErrorFragment.newInstance(
@@ -55,7 +54,7 @@ class TransferActivity : AppCompatActivity(), GenericServerErrorFragment.Listene
     }
 
     fun hideGenericServerErrorScreen() {
-        dataBinding.vRoot.isVisible = false
+//        dataBinding.vMainRoot.isVisible = false
         supportFragmentManager.beginTransaction().remove(fragment!!).commit()
     }
 

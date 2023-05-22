@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/v_transferto_myaccounts_detail_root"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/ras_components_bb_color_transparent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/v_header"
+        android:id="@+id/v_notch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -34,15 +36,14 @@
     <LinearLayout
         android:id="@+id/body_detail_lly"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/ras_components_bb_color_white"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/ras_components_bb_spacing_very_large">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/bt_next"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -60,41 +61,52 @@
                     android:textColor="@color/ras_components_bb_color_grey_600"
                     android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp">
 
                     <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                         android:id="@+id/transferfrom_account"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/transferfrom_change"
-                            android:text="accountName"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="accountName"
                         android:textColor="@color/ras_components_bb_color_grey_900"
-                        android:textSize="@dimen/ras_components_bb_spacing_normal" />
+                        android:textSize="@dimen/ras_components_bb_spacing_normal"
+                        app:layout_constraintEnd_toStartOf="@+id/transferfrom_change"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                        android:id="@+id/transferfrom_account_desp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="accountDesp"
+                        android:textColor="@color/ras_components_bb_color_grey_500"
+                        android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        app:layout_constraintEnd_toStartOf="@+id/transferfrom_change"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/transferfrom_account" />
+
 
                     <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                         android:id="@+id/transferfrom_change"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="4dp"
-                            android:text="Change"
+                        android:text="Change"
+                        android:paddingStart="@dimen/ras_components_bb_spacing_small"
+                        app:layout_constraintTop_toTopOf="@+id/transferfrom_account"
+                        app:layout_constraintBottom_toBottomOf="@+id/transferfrom_account"
                         android:textColor="#0084FF"
-                        android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
-                </RelativeLayout>
-
-                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                    android:id="@+id/transferfrom_account_desp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="accountDesp"
-                    android:textColor="@color/ras_components_bb_color_grey_500"
-                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
+                        android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                     android:layout_width="match_parent"
@@ -126,6 +138,7 @@
                     android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
                     android:orientation="horizontal"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     android:weightSum="2">
 
                     <RadioButton
@@ -164,14 +177,6 @@
                     app:ras_components_label="@string/remarks_optional"
                     app:ras_components_text="Invoice123456" />
 
-                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                    android:id="@+id/desp_remarks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0 / 16"
-                    android:textColor="@color/ras_components_bb_color_grey_500"
-                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
-
                 <com.redairship.ocbc.bb.components.views.textviews.BBTextField
                     android:id="@+id/tf_reference_number"
                     android:layout_width="match_parent"
@@ -180,17 +185,11 @@
                     app:ras_components_label="@string/your_reference_number_optional"
                     app:ras_components_text="Invoice123456789" />
 
-                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                    android:id="@+id/desp_reference_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0 / 140"
-                    android:textColor="@color/ras_components_bb_color_grey_500"
-                    android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/detail_review"
+                android:layout_marginHorizontal="-32dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -208,7 +207,6 @@
                     android:id="@+id/review_valuedate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
                     android:textColor="@color/ras_components_bb_color_grey_600"
                     android:textSize="@dimen/ras_components_bb_text_size_14_sp"
                     app:ras_components_description="test"
@@ -218,7 +216,6 @@
                     android:id="@+id/review_remarks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
                     android:textColor="@color/ras_components_bb_color_grey_600"
                     android:textSize="@dimen/ras_components_bb_text_size_14_sp"
                     app:ras_components_description="test"
@@ -228,7 +225,6 @@
                     android:id="@+id/review_reference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
                     android:textColor="@color/ras_components_bb_color_grey_600"
                     android:textSize="@dimen/ras_components_bb_text_size_14_sp"
                     app:ras_components_description="test"
@@ -250,7 +246,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                            android:text="@string/review_add_as_payee"
+                        tools:visibility="gone"
+                        android:text="@string/review_add_as_payee"
                         android:textColor="@color/ras_components_bb_color_grey_700"
                         android:textSize="@dimen/ras_components_bb_spacing_normal"
                         app:ras_components_textWeight="semi_bold" />
@@ -262,7 +259,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:button="@null"
-                        android:src="@drawable/ras_passportauth_ic_checkbox_unchecked" />
+                        android:src="@drawable/ras_passportauth_ic_checkbox_checked" />
                 </RelativeLayout>
             </LinearLayout>
         </FrameLayout>

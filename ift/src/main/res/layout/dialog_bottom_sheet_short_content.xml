@@ -13,7 +13,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
-        android:id="@+id/v_header"
+        android:id="@+id/v_notch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/ras_components_themeBottomSheetHeaderMinHeight"
@@ -83,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:maxLines="2"
                 android:textSize="16sp"
                 android:textColor="@color/ras_components_bb_color_grey_900"
                 android:background="@color/ras_components_bb_color_white"

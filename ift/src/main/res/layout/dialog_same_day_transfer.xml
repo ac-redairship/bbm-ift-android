@@ -38,7 +38,8 @@
         android:id="@+id/bt_cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginStart="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginEnd="@dimen/ras_components_bb_spacing_small"
         android:layout_marginVertical="?attr/ras_components_themeSpacingLarge"
         android:layout_marginTop="?attr/ras_components_themeSpacingLarge"
         android:layout_marginBottom="?attr/ras_components_themeSpacingLarge"
@@ -46,13 +47,14 @@
         app:layout_constraintEnd_toStartOf="@+id/bt_proceed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_description_1"
-        app:ras_components_label="Cancel" />
+        app:ras_components_label="Change Date" />
 
     <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
         android:id="@+id/bt_proceed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="?attr/ras_components_themeSpacingVeryLarge"
+        android:layout_marginStart="@dimen/ras_components_bb_spacing_small"
+        android:layout_marginEnd="?attr/ras_components_themeSpacingVeryLarge"
         android:layout_marginVertical="?attr/ras_components_themeSpacingLarge"
         android:layout_marginTop="?attr/ras_components_themeSpacingLarge"
         android:layout_marginBottom="?attr/ras_components_themeSpacingLarge"

@@ -5,10 +5,18 @@
     android:id="@+id/v_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ras_default_bg"
+    android:background="@color/ras_components_bb_color_white"
+    android:clickable="true"
+    android:paddingTop="@dimen/ras_components_bb_spacing_very_large"
     android:clipChildren="false"
-    android:clipToPadding="false"
-    android:fitsSystemWindows="true">
+    android:clipToPadding="false">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_left_pattern"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.redairship.ocbc.bb.components.views.headers.BBStandardHeader
         android:id="@+id/toolbar"
@@ -21,7 +29,15 @@
         app:ras_components_showDivider="false"
         app:ras_components_showEndButton="false"
         app:ras_components_thinIcon="close"
-        tools:layout_height="48dp" />
+        tools:layout_height="48dp" >
+
+            <com.redairship.ocbc.bb.components.views.icons.BBThinIconView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/iv_start_icon"
+                app:ras_components_thinIcon="close"/>
+
+    </com.redairship.ocbc.bb.components.views.headers.BBStandardHeader>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,18 +76,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:ras_components_textWeight="bold" />
 
-                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Transaction amount:"
-                    android:textColor="@color/ras_components_bb_color_grey_900"
-                    android:textSize="@dimen/ras_components_bb_text_size_26_sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:ras_components_textWeight="regular" />
 
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                     android:id="@+id/tv_transaction_amount_label"
@@ -156,17 +160,17 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/ras_passportauth_ic_checkbox_checked" />
+                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
+                        android:src="@drawable/ic_radio_checked" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -221,7 +225,7 @@
                         android:layout_height="24dp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/ras_passportauth_ic_checkbox_unchecked" />
+                        android:src="@drawable/ic_radio_unchecked" />
 
                 </RelativeLayout>
             </LinearLayout>

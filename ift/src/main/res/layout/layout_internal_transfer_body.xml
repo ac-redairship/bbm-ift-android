@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:showIn="@layout/fragment_internal_funds_transfer">
+
+    <include
+        android:id="@+id/v_amounts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/layout_internal_transfer_amounts"/>
+
+    <include
+        android:id="@+id/v_details"
+        layout="@layout/bottom_sheet_internal_funds_transfer_details"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
+        android:id="@+id/bt_review_next"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginVertical="?attr/ras_components_themeSpacingLarge"
+        android:enabled="true"
+        android:elevation="20dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:ras_components_label="@string/next_text" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

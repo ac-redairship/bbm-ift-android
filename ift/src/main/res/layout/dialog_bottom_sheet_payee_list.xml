@@ -1,59 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_bottom_sheet_payee_list"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/ras_components_bb_color_white"
     android:orientation="vertical"
     android:visibility="visible"
-    android:background="@color/ras_components_bb_color_white"
-    app:behavior_hideable="true"
     app:behavior_draggable="false"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-    <LinearLayout
-        android:id="@+id/v_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/ras_components_themeBottomSheetHeaderMinHeight"
-        android:background="@drawable/ras_components_bg_bb_bottom_sheet"
-        android:orientation="vertical">
-
-        <View
-            android:id="@+id/v_handle"
-            android:layout_width="?attr/ras_components_themeBottomSheetHandleWidth"
-            android:layout_height="?attr/ras_components_themeBottomSheetHandleHeight"
-            android:layout_marginTop="?attr/ras_components_themeSpacingSmall"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/ras_components_bg_bb_bottom_sheet_handle"/>
-
-        <LinearLayout
-            android:id="@+id/v_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="?attr/ras_components_themeColorBottomSheetBackground">
-        </LinearLayout>
-    </LinearLayout>
+    app:behavior_hideable="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/ras_components_bb_color_white">
+        android:background="@color/ras_components_bb_color_white"
+        android:orientation="vertical">
 
         <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
             android:id="@+id/text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="@dimen/ras_components_bb_spacing_very_large"
             android:layout_marginTop="?attr/ras_components_themeSpacingLarge"
             android:text="Payee List"
-            android:layout_marginVertical="@dimen/ras_components_bb_spacing_very_large"
-            android:layout_marginHorizontal="32dp"
             android:textColor="?attr/ras_components_themeColorBottomSheetHeaderText"
             android:textSize="?attr/ras_components_themeTextSizeHeader3"
+            app:layout_constraintTop_toTopOf="parent"
             app:ras_components_textWeight="semi_bold" />
 
         <RelativeLayout
@@ -61,65 +35,109 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
-            android:layout_marginVertical="@dimen/ras_components_bb_spacing_large"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+            android:layout_marginBottom="@dimen/ras_components_bb_spacing_large"
             android:background="@drawable/search_round_corner"
-            android:padding="1dp"
-            android:visibility="visible"
+            android:paddingVertical="1dp"
+            android:paddingHorizontal="@dimen/ras_components_bb_spacing_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_title">
+            app:layout_constraintTop_toBottomOf="@id/text_title"
+            tools:visibility="visible">
 
             <ImageButton
                 android:id="@+id/search_image_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:background="@drawable/search_icon"
+                android:background="@color/ras_components_bb_color_transparent"
+                android:src="@drawable/ras_components_ic_magnifying_glass"
+                android:tint="@color/ras_components_bb_color_grey_400"
                 tools:ignore="ContentDescription" />
 
-            <EditText
+            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansEditText
                 android:id="@+id/edtSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@id/search_image_button"
+                android:background="@null"
                 android:hint="@string/search_text"
                 android:inputType="text"
                 android:singleLine="true"
-                android:background="@null"
-                android:layout_marginLeft="@dimen/size_8dp"/>
+                android:textColor="@color/ras_components_bb_color_grey_900"
+                android:textColorHint="@color/ras_components_bb_color_grey_400"
+                android:textSize="@dimen/ras_components_bb_text_size_14_sp" />
 
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/ras_components_bb_spacing_large"
+            android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
-            app:layout_constraintTop_toBottomOf="@id/search_body"/>
+            android:layout_marginVertical="@dimen/ras_components_bb_spacing_large"
+            android:background="@color/ras_components_bb_color_white"
+            android:focusableInTouchMode="true"
+            android:minHeight="600dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_title"
+            tools:alpha="0.5" />
+
+        <View
+            android:id="@+id/v_lift_shadow"
+            app:layout_constraintTop_toTopOf="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:alpha="0"
+            android:elevation="@dimen/ras_components_bb_spacing_large"
+            android:background="@drawable/ras_components_bb_shadow" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
+            android:layout_marginVertical="@dimen/ras_components_bb_spacing_large"
+            android:minHeight="600dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_body" />
+
+
+        <LinearLayout
+            android:id="@+id/v_error_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+            android:layout_marginBottom="95dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_body">
+
+            <ImageView
+                android:id="@+id/iv_error_message"
+                android:layout_width="139dp"
+                android:layout_height="139dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/icon_wallet"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                android:id="@+id/tv_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="62dp"
+                android:gravity="center"
+                android:text="Placeholder, copy will be soon finalised"
+                android:textAlignment="center"
+                android:textColor="#5A707B"
+                android:textSize="14dp" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/empty_lly"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="95dp"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="139dp"
-            android:layout_height="139dp"
-            android:src="@drawable/icon_wallet"
-            android:layout_gravity="center_horizontal"/>
-        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="62dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Placeholder, copy will be soon finalised"
-            android:textColor="#5A707B"
-            android:textSize="14dp" />
-    </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

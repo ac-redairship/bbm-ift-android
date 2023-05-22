@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/ras_components_bb_spacing_very_large"
+        android:paddingStart="@dimen/ras_components_bb_spacing_very_large"
         android:text="@string/frequently_used"
         android:textColor="@color/ras_components_bb_color_grey_500"
         android:textSize="@dimen/ras_components_bb_text_size_12_sp" />

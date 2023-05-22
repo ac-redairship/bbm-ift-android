@@ -7,36 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:visibility="gone"
-    app:behavior_hideable="true"
-    app:behavior_draggable="false"
+    app:behavior_hideable="false"
+    app:behavior_draggable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-    <LinearLayout
-        android:id="@+id/v_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/ras_components_themeBottomSheetHeaderMinHeight"
-        android:background="@drawable/ras_dashboard_bg_rounded_top"
-        android:orientation="vertical"
-        android:layout_gravity="bottom">
-
-        <View
-            android:id="@+id/v_handle"
-            android:layout_width="?attr/ras_components_themeBottomSheetHandleWidth"
-            android:layout_height="?attr/ras_components_themeBottomSheetHandleHeight"
-            android:layout_marginTop="?attr/ras_components_themeSpacingSmall"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/ras_components_bg_bb_bottom_sheet_handle"/>
-
-        <LinearLayout
-            android:id="@+id/v_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="?attr/ras_components_themeColorBottomSheetBackground">
-        </LinearLayout>
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -55,26 +28,27 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/ras_components_bb_spacing_normal"
                 android:orientation="horizontal">
+
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                     android:id="@+id/tf_bottomsheet_another_ocbc_title"
                     style="@style/ras_components_BBBottomSheetHeaderTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:text="Bank account details"
                     android:textColor="@color/ras_components_bb_color_grey_800"
-                    app:ras_components_textWeight="bold"
                     android:textSize="16sp"
-                    android:text="Bank account details"/>
+                    app:ras_components_textWeight="bold" />
 
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                     android:id="@+id/tf_bottomsheet_another_ocbc_payee_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical"
+                    android:text="Load payee list"
                     android:textColor="#0084FF"
-                    android:textSize="14sp"
-                    android:text="Load payee list"/>
+                    android:textSize="14sp" />
             </RelativeLayout>
 
             <com.redairship.ocbc.bb.components.views.textviews.BBTextField
@@ -91,36 +65,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+                app:ras_components_errorText="Special characters found, only * “ ‘ : ; ! ? ~ %"
                 app:ras_components_label="Payee name"/>
 
             <RelativeLayout
+                android:id="@+id/v_add_to_payee_list"
+                android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
                 android:layout_width="match_parent"
-                android:layout_height="73dp"
-                android:layout_marginTop="24dp">
+                android:layout_height="wrap_content">
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans"
                     android:textSize="@dimen/ras_components_bb_spacing_normal"
                     android:layout_centerVertical="true"
                     app:ras_components_textWeight="semi_bold"
                     android:textColor="@color/ras_components_bb_color_grey_700"
                     android:text="@string/review_add_as_payee" />
+
                 <CheckBox
                     android:id="@+id/chk_bottomsheet_another_ocbc_addaspayee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:button="@null"
-                    android:drawableEnd="@drawable/checkbox_ic_green_white" />
+                    android:drawableEnd="@drawable/ras_passportauth_ic_checkbox_checked" />
             </RelativeLayout>
 
             <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
                 android:id="@+id/bottomsheet_another_ocbc_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
                 app:ras_components_label="@string/next_text" />
         </LinearLayout>
     </ScrollView>

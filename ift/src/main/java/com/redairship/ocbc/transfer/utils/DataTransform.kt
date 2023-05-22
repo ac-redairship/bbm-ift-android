@@ -28,7 +28,7 @@ class DataTransform {
                     amountStr = amount.toString()
                     formatStr = StringBuffer()
                 }
-                val splitAmount = amountStr.split("\\.").toTypedArray()
+                val splitAmount = amountStr.split(".").toTypedArray()
                 val beforePoint = splitAmount[0].toCharArray()
                 val afterPoint: MutableList<String> = ArrayList()
                 var count = 0

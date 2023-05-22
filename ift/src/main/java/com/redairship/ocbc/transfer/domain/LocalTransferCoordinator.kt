@@ -2,11 +2,24 @@ package com.redairship.ocbc.transfer.domain
 
 import android.content.Context
 import android.content.Intent
-import com.ocbc.transfer.presentation.local.TransferActivity
+import androidx.fragment.app.Fragment
+import com.redairship.ocbc.transfer.presentation.local.TransferActivity
 import com.redairship.domain.AppDomainManagerInterface
+import com.redairship.domain.DomainResponse
 import com.redairship.domain.common.Coordinator
 import com.redairship.domain.common.MainCoordinatorInterface
+import com.redairship.domain.common.types.CaseInfo
+import com.redairship.domain.common.types.TwoFactorResult
+import com.redairship.domain.common.types.organization.AuthorizedUser
+import com.redairship.domain.common.types.organization.CompanyInfo
+import com.redairship.domain.common.types.organization.ContactPerson
+import com.redairship.domain.common.types.organization.OwnershipType
+import com.redairship.domain.common.types.personal.AddressInfo
+import com.redairship.domain.common.types.services.BusinessAccount
+import com.redairship.domain.common.types.services.BusinessService
 import com.redairship.domain.getService
+import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFragment
+import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageType
 import com.redairship.ocbc.transfer.LocalTransferCoordinatorInterface
 import com.redairship.ocbc.transfer.LocalTransferData
 import com.redairship.ocbc.transfer.UiState
@@ -14,8 +27,8 @@ import com.redairship.ocbc.transfer.model.*
 import com.redairship.ocbc.transfer.presentation.common.UseMyRateFragment
 import com.redairship.ocbc.transfer.utils.flowFromAppDomain
 import com.redairship.ocbc.transfer.utils.flowFromAppDomain2
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 
 
 class LocalTransferCoordinator(
@@ -90,11 +103,145 @@ class LocalTransferCoordinator(
     }
 
     override fun start(vararg args: Any) {
-        context.startActivity(Intent(context, TransferActivity::class.java))
+        context.startActivity(Intent(context, TransferActivity::class.java).apply {
+            putExtra("jump_to", args[0].toString())
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        })
     }
 
 
     override fun goToUseMyRate() {
         coordinator.navigateTo(UseMyRateFragment.newInstance(), false)
+    }
+
+    override fun verifyOtp(otp: String) = flowFromAppDomain2 {
+        return@flowFromAppDomain2 DomainResponse.Success(
+            TwoFactorResult(
+                isSuccessful = true,
+                errorDescription = "",
+                remainingAttempts = 3,
+                caseInfo = normal
+            )
+        )
+    }
+
+    val normal = CaseInfo(
+        address = AddressInfo(
+            line1 = "",
+            line2 = "",
+            country = "",
+            postalCode = "",
+            formatted = "100 Apple Road #01-01,\n Singapore 123456"
+        ),
+        companyInfo = CompanyInfo(
+            phoneNumber = "+65 1234 5678",
+//            officeAddress = "100 Apple Road #01-01, Singapore 123456",
+            mailingAddress = "100 Apple Road #01-01, Singapore 123456",
+            ownershipType = OwnershipType.SOLE
+        ),
+        contactPersons = listOf(
+            ContactPerson(
+                name = "Lim Zhi Wei Alex",
+                phoneNumber = "+65 9988 3322",
+                email = "zhiwelim-alex@mail.com"
+            ),
+            ContactPerson(
+                name = "Lau Chee Hong",
+                phoneNumber = "+65 9977 1234",
+                email = "cheehonglau@mail.com"
+            )
+        ),
+        authorisedUsers = listOf(
+            AuthorizedUser(
+                name = "Lim Zhi Wei Alex",
+                phoneNumber = "+65 9988 3322",
+                email = "zhiwelim-alex@mail.com",
+                hasAuthorisedSignatories = true,
+                isSigningOnResolution = true,
+                isAuthorisedPerson = true,
+                businessServices = listOf(
+                    BusinessService(
+                        code = "IB",
+                        label = "Internet Banking"
+                    ),
+                    BusinessService(
+                        code = "Alert",
+                        label = "eAlert"
+                    ),
+                    BusinessService(
+                        code = "DC", label = "Business Debit Card"
+                    ),
+                )
+            ),
+            AuthorizedUser(
+                name = "Lau Chee Hong",
+                phoneNumber = "+65 9977 1234",
+                email = "cheehonglau@mail.com",
+                hasAuthorisedSignatories = true,
+                isSigningOnResolution = false,
+                isAuthorisedPerson = false,
+                businessServices = listOf(
+                    BusinessService(code = "IB", label = "Internet Banking"),
+                    BusinessService(code = "Alert", label = "eAlert"),
+                )
+            ),
+        ),
+        businessAccounts = listOf(
+            BusinessAccount(
+                name = "Business Entrepreneur Account",
+                currency = "SGD"
+            ),
+            BusinessAccount(
+                name = "Foreign Currency Call Account ",
+                currency = "HKD"
+            ),
+        ),
+        businessServices = listOf(
+            BusinessService(code = "IB", label = "Internet Banking"),
+            BusinessService(code = "Alert", label = "SMS / Email alerts"),
+            BusinessService(code = "DC", label = "Business debit card"),
+        ),
+        beneficialOwner = listOf("Lim Zhi Wei Alex", "Lau Chee Hong"),
+        authorisedDate = "17 September 2021"
+    )
+
+    override fun goToOneTokenVerification(otpFragment: Any) {
+        if (otpFragment !is Fragment) throw IllegalArgumentException("otpFragment should be an instance of Fragment")
+        coordinator.navigateTo(otpFragment, true)
+    }
+
+    override fun goToEmailVerification(otpFragment: Any) {
+        if (otpFragment !is Fragment) throw IllegalArgumentException("otpFragment should be an instance of Fragment")
+        coordinator.navigateTo(otpFragment, true)
+    }
+
+    override fun <LISTENER, CLOSE_LISTENER> showGenericErrorScreen(
+        tag: String,
+        title: String,
+        description: String,
+        buttonText: String,
+        type: Int,
+        interceptDoneAction: Boolean,
+        listener: LISTENER?,
+        closeListener: CLOSE_LISTENER?,
+        hasCloseIcon: Boolean,
+        interceptCloseAction: Boolean
+    ) {
+        coordinator.navigateTo(
+            fragment = GenericMessageFragment.newInstance(
+                title,
+                description,
+                buttonText,
+                GenericMessageType.findTypeById(type),
+                interceptDoneAction,
+                hasCloseIcon,
+                interceptCloseAction
+            ).apply {
+                if (listener is GenericMessageFragment.Listener) this.listener = listener
+                if (closeListener is GenericMessageFragment.CloseListener) this.closeListener =
+                    closeListener
+            },
+            addToBackStack = true
+        )
     }
 }

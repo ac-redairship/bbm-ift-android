@@ -47,7 +47,7 @@
             app:layout_constraintStart_toStartOf="@id/item_name"
             app:layout_constraintTop_toBottomOf="@id/item_name" />
 
-        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+        <com.redairship.ocbc.bb.components.views.textviews.BBAmountTextView
             android:id="@+id/item_amount"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -55,7 +55,12 @@
             android:textColor="@color/ras_components_bb_color_grey_700"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:ras_components_fractionalTextSize="@dimen/ras_components_bb_text_size_14_sp"
+            app:ras_components_showCurrencyText="false"
+            app:ras_components_textColor="@color/ras_components_bb_color_grey_700"
+            app:ras_components_wholeNumberTextSize="@dimen/ras_components_bb_text_size_16_sp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     <View
         android:layout_width="match_parent"

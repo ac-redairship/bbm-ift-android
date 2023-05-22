@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ocbc.transfer.presentation.local.TransferActivity">
+    tools:context="com.redairship.ocbc.transfer.presentation.local.TransferActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
@@ -23,9 +23,8 @@
 <!--        layout="@layout/layout_loading" />-->
 
     <FrameLayout
-        android:id="@+id/v_root"
+        android:id="@+id/v_main_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"></FrameLayout>
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

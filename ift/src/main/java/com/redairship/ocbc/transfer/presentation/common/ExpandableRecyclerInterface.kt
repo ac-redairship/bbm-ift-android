@@ -7,5 +7,7 @@ interface ExpandableRecyclerInterface<ExpandedType : Any,
 
     fun selectParentItem(account: ExpandableType)
 
+    fun onExpandOrCollapse(isExpanded: Boolean)
+
     fun selectChildItem(parentAccount: ExpandableType, childAccount: ExpandedType)
 }

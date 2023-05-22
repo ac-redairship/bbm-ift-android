@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.redairship.ocbc.transfer.model.AccountItemListModel
 import com.redairship.ocbc.transfer.model.AccountItemModel
 import com.redairship.ocbc.transfer.presentation.base.TransferStatus
 import com.redairship.ocbc.transfer.presentation.common.AccountListBottomInterface
 import com.redairship.ocbc.transfer.presentation.common.AccountListBottomSheet
 import com.redairship.ocbc.transfer.presentation.common.AccountListExpandableAdapter
+
 
 class MyAccountListBottomSheet(type: TransferStatus, listInterface: AccountListBottomInterface) :
     AccountListBottomSheet(type, listInterface){
@@ -48,6 +50,7 @@ class MyAccountListBottomSheet(type: TransferStatus, listInterface: AccountListB
         }
         accountlistAdapter =
             activity?.let { AccountListExpandableAdapter(ArrayList(newList), this@MyAccountListBottomSheet) }
+
         accountlistAdapter?.let {
             it.setExpanded(false)
             val layoutManager = LinearLayoutManager(context)

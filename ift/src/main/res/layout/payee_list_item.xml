@@ -1,42 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/item_container">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        tools:layout_marginHorizontal="32dp">
 
         <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-            android:id="@+id/item_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_marginEnd="@dimen/ras_components_bb_spacing_normal"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/ras_components_bb_color_grey_700"
             android:textSize="16sp"
-            app:ras_components_textWeight="semi_bold"/>
+            app:layout_constraintEnd_toStartOf="@+id/tv_overseas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ras_components_textWeight="semi_bold"
+            tools:text="Sample Name" />
 
         <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-            android:id="@+id/item_desp"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_overseas"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:drawableLeft="@drawable/ic_globe"
+            android:drawablePadding="4dp"
+            android:text="Overseas"
+            android:textAllCaps="true"
             android:textColor="@color/ras_components_bb_color_grey_700"
-            app:layout_constraintStart_toStartOf="@id/item_name"
-            app:layout_constraintTop_toBottomOf="@id/item_name" />
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ras_components_textWeight="semi_bold"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/v_check"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+            app:tint="@color/ras_components_bb_color_green"
+            android:src="@drawable/ras_components_ic_bb_check_thick"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_bank"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/ras_components_bb_color_grey_700"
+            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_name"
+            app:layout_constraintStart_toStartOf="@id/tv_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            tools:text="Sample Bank" />
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_account_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/ras_components_bb_color_grey_700"
+            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_bank"
+            app:layout_constraintStart_toStartOf="@id/tv_bank"
+            app:layout_constraintTop_toBottomOf="@id/tv_bank"
+            tools:text="123456789" />
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_country"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/ras_components_bb_color_grey_700"
+            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/tv_account_number"
+            app:layout_constraintStart_toStartOf="@id/tv_account_number"
+            app:layout_constraintTop_toBottomOf="@id/tv_account_number"
+            tools:text="United States"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#F5F5F5"
-        android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
         android:layout_marginLeft="@dimen/ras_components_bb_spacing_very_large"
+        android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+        android:background="#F5F5F5"
         app:layout_constraintTop_toBottomOf="@id/item_desp" />
 </LinearLayout>

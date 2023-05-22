@@ -11,11 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ocbc.transfer.databinding.DialogSameDayTransferBinding
 import com.redairship.ocbc.bb.components.views.bottomsheet.BBBottomSheet
 
-class SameDayTransferDialog : BBBottomSheet() {
+class SameDayTransferDialog(val listener: ResponseListener) : BBBottomSheet() {
 
     private lateinit var binding: DialogSameDayTransferBinding
-    private val listener: ResponseListener
-        get() = parentFragment as ResponseListener
 
     override fun getContentView(
         inflater: LayoutInflater,
@@ -63,7 +61,7 @@ class SameDayTransferDialog : BBBottomSheet() {
     }
 
     companion object {
-        fun newInstance() = SameDayTransferDialog()
+        fun newInstance(listener: ResponseListener) = SameDayTransferDialog(listener)
     }
 
     sealed class SameDayTransferResult {

@@ -36,7 +36,6 @@ abstract class AccountListBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeViewModelResponse()
     }
 
@@ -61,6 +60,10 @@ abstract class AccountListBottomSheet(
     override fun selectParentItem(account: AccountItemModel) {
         dismiss()
         listInterface.selectAccountItem(type, account)
+    }
+
+    override fun onExpandOrCollapse(isExpanded: Boolean) {
+        accountlistAdapter?.notifyDataSetChanged()
     }
 
     override fun selectChildItem(parentAccount: AccountItemModel, childAccount: AccountItemModel) {

@@ -11,11 +11,14 @@
     <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
         android:id="@+id/title"
         android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/close_arrow"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="TextView TextView TextView TextView TextView TextView TextView "
         android:textSize="16sp"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="@color/ras_components_bb_color_grey_700"
-        android:layout_marginHorizontal="32dp"
+        android:layout_marginStart="32dp"
         app:ras_components_textWeight="semi_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +78,10 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_child_items"
         android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
+        android:background="@color/ras_components_bb_color_white"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

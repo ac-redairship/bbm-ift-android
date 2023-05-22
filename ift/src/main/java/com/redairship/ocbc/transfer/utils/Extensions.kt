@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
 
-class DomainException(val error: DomainError = LocalTransferError("")) :
+class DomainException(val error: DomainError = LocalTransferError.ServerResponseError("")) :
     Exception(error.message)
 
 fun <T, E : DomainError> flowFromAppDomain(block: suspend () -> DomainResponse<T, E>): Flow<UiState<T>> {

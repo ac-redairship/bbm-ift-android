@@ -9,12 +9,13 @@ data class BeneficiaryData(
     val name: String,
     val payType: String,
     val payDetail: PayDetail,
-    val isLocalBank: String,
-    val bnankDetailDTO: BankDetailDTO,
+    val isLocalBank: Boolean,
+    val bankDetailDTO: BankDetailDTO,
     val statusCode: String,
     val transactionVersion: String,
     val customizedStatus: String,
     val singleAccess: Boolean,
+    val isSelected: Boolean
 ) : Serializable
 
 data class BankDetailDTO(

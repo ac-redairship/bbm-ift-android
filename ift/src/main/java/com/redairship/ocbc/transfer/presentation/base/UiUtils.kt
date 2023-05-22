@@ -28,7 +28,7 @@ import java.util.regex.Pattern
 val alphanumericPattern = Pattern.compile("[^a-zA-Z0-9 \\ ]")
 val alphanumericDashPattern = Pattern.compile("[^a-zA-Z0-9- \\ ]")
 
-fun checkAlphanumericDashPattern(accountNumber: String): Boolean{
+fun checkAlphanumericDashPattern(accountNumber: String): Boolean {
     return !alphanumericDashPattern.matcher(accountNumber).find()
 }
 
@@ -72,7 +72,7 @@ fun editTextAmountToString(editable: Editable): String {
     return text
 }
 
-internal fun convertStrToDateFormat(stringdate : String):String {
+internal fun convertStrToDateFormat(stringdate: String): String {
     return DataTransform.getFormatDate(convertStringToDate(stringdate), DateFormat.FORMATE_R)
 }
 
@@ -106,10 +106,14 @@ private fun takeScreenshot(
     output.flush()
     output.close()
 
-    return FileProvider.getUriForFile(context, context.applicationContext.packageName.toString() + ".provider", file)
+    return FileProvider.getUriForFile(
+        context,
+        context.applicationContext.packageName.toString() + ".provider",
+        file
+    )
 }
 
-fun viewShoot(context: Context, layout: View, fileName:String): Uri {
+fun viewShoot(context: Context, layout: View, fileName: String): Uri {
     var h = 0
 
     if (layout is LinearLayout) {

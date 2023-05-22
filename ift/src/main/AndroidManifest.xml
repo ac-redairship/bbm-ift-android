@@ -4,7 +4,12 @@
 
     <application>
         <activity
-            android:name=".presentation.local.TransferActivity"
+            android:name="com.redairship.ocbc.transfer.presentation.local.TransferActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransferTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".presentation.local.TransferActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/TransferTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />

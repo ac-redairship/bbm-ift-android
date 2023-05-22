@@ -1,4 +1,4 @@
-package com.ocbc.transfer.presentation.common
+package com.redairship.ocbc.transfer.presentation.common
 
 import com.redairship.ocbc.transfer.model.TransferToTypeResponse
 

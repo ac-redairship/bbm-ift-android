@@ -1,10 +1,17 @@
 package com.redairship.ocbc.transfer.presentation.common
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import androidx.core.view.forEach
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
+import com.ocbc.transfer.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -103,7 +110,7 @@ abstract class ExpandableRecyclerViewAdapter<ExpandedType : Any,
 
             handleLastPositionScroll(position)
 
-            onExpandableClick(pvh, expandable)
+            onExpandableClick(position, pvh, expandable)
         }
         return pvh
     }
@@ -171,8 +178,16 @@ abstract class ExpandableRecyclerViewAdapter<ExpandedType : Any,
 
     private fun clickEvent(expandableGroup: ExpandableType, containerView: View) {
         val childRecyclerView = containerView.getRecyclerView()
-
-        childRecyclerView?.visibility = if(expandableGroup.isExpanded)
+        val transition: Transition = Slide(Gravity.TOP)
+        transition.interpolator = DecelerateInterpolator()
+        transition.duration = if(expandableGroup.isExpanded) 500 else 100
+        childRecyclerView ?: return
+        transition.addTarget(childRecyclerView)
+        TransitionManager.beginDelayedTransition(
+            containerView as ViewGroup,
+            transition
+        )
+        childRecyclerView.visibility = if(expandableGroup.isExpanded)
             View.VISIBLE
         else View.GONE
 
@@ -370,6 +385,7 @@ abstract class ExpandableRecyclerViewAdapter<ExpandedType : Any,
      * @param expandableType O item expansível.
      */
     abstract fun onExpandableClick(
+        position: Int,
         expandableViewHolder: PVH,
         expandableType: ExpandableType
     )

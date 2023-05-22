@@ -8,9 +8,9 @@
 
     <fragment
         android:id="@+id/transferlocal_entry"
-        android:name="com.redairship.ocbc.transfer.presentation.common.UseMyRateFragment"
+        android:name="com.redairship.ocbc.transfer.presentation.transfer.TransferEntryFragment"
         android:label="transferlocal_entry"
-        tools:layout="@layout/fragment_use_my_rate">
+        tools:layout="@layout/transfer_fragment_entry">
 
         <action
             android:id="@+id/actiontodetail"
@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/transferlocal_detail"
-        android:name="com.redairship.ocbc.transfer.presentation.local.TransferToMyAccountsFragment"
+        android:name="com.redairship.ocbc.transfer.presentation.transfer.local.InternalFundsTransferFragment"
         android:label="transferlocal_detail"
-        tools:layout="@layout/fragment_local_transfer_to_myaccounts">
+        tools:layout="@layout/fragment_internal_funds_transfer">
 
         <action
             android:id="@+id/actiontoconfirm"

@@ -16,3 +16,4 @@ rootProject.name = "bbm-ift-android"
 include ':app'
 include ':ift'
 include ':domain'
+include ':CalendarPickerView'

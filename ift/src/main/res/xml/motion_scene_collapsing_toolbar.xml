@@ -50,15 +50,15 @@
             app:visibilityMode="ignore"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
         </Constraint>
-        <Constraint android:id="@id/main_body_lly"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_lly_end">
-        </Constraint>
+<!--        <Constraint android:id="@id/main_body_lly"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/header_lly_end">-->
+<!--        </Constraint>-->
     </ConstraintSet>
 
 </MotionScene>

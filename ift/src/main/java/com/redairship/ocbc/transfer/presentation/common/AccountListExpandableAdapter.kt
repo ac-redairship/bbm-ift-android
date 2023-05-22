@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.accountlist_child_item.view.*
 import kotlinx.android.synthetic.main.accountlist_parent_item.view.*
 import java.math.BigDecimal
 
+
 class AccountListExpandableAdapter(parents: ArrayList<AccountItemModel>,
                                    private val expandableRecyclerInterface: ExpandableRecyclerInterface<AccountItemModel, AccountItemModel>
 ) :
@@ -21,12 +22,13 @@ class AccountListExpandableAdapter(parents: ArrayList<AccountItemModel>,
     ) {
 
     var hideBalance : Boolean = false
+    private val minRenderTime = 36L
 
     class PViewHolder(v: View) : ExpandableRecyclerViewAdapter.ExpandableViewHolder(v) {
         internal var layout = v.country_item_parent_container
         internal var title : TextView = v.title
-        internal var closeImage = v.close_arrow
-        internal var upArrowImg = v.up_arrow
+        internal var expandIcon = v.close_arrow
+        internal var collapseIcon = v.up_arrow
         internal var description = v.description
         internal var availableBalance = v.availableBalance
     }
@@ -63,15 +65,17 @@ class AccountListExpandableAdapter(parents: ArrayList<AccountItemModel>,
         expandableType: AccountItemModel,
         position: Int
     ) {
-        parentViewHolder.title.text = expandableType.accountNo + expandableType.currency
 
-        val money = DataTransform.formatMoney(BigDecimal(expandableType.amount.toString().replace(",".toRegex(), ""))).toString()
+        val money = DataTransform.formatMoney(BigDecimal(expandableType.amount.value.toString().replace(",".toRegex(), ""))).toString()
 
         parentViewHolder.description.text = money + " " + parentViewHolder.containerView.context.getText(R.string.available_text)
         parentViewHolder.description.visibility = if (hideBalance) View.INVISIBLE else View.VISIBLE
-        if (expandableType.accountItems.isEmpty()) {
-            parentViewHolder.closeImage.visibility = View.INVISIBLE
-            parentViewHolder.upArrowImg.visibility = View.INVISIBLE
+        if (expandableType.availableAmounts.isEmpty()) {
+            parentViewHolder.title.text = "${expandableType.accountNumber} ${expandableType.currency.currencyCode} - ${expandableType.accountName}"
+            parentViewHolder.expandIcon.visibility = View.INVISIBLE
+            parentViewHolder.collapseIcon.visibility = View.INVISIBLE
+        } else {
+            parentViewHolder.title.text = "${expandableType.accountNumber} - Multi-currency"
         }
     }
 
@@ -81,34 +85,41 @@ class AccountListExpandableAdapter(parents: ArrayList<AccountItemModel>,
         expandableType: AccountItemModel,
         position: Int
     ) {
-        childViewHolder.itemName.text = expandedType.accountNo
-        childViewHolder.itemDesp.text = expandedType.currency
-        childViewHolder.itemAmount.text = expandedType.amount.toString()
+        childViewHolder.itemName.text = expandedType.amount.currency.displayName
+        childViewHolder.itemDesp.text = expandedType.amount.currency.currencyCode
+        childViewHolder.itemAmount.amount = expandedType.amount
         childViewHolder.itemAmount.visibility = if (hideBalance) View.INVISIBLE else View.VISIBLE
 
-        var id = getFlagResouce(expandedType.currency!!, childViewHolder.itemView.context)
+        val id = getFlagResouce(expandedType.amount.currency.currencyCode, childViewHolder.itemView.context)
         childViewHolder.itemIcon.setImageResource(id)
     }
 
     override fun onExpandableClick(
+        position: Int,
         expandableViewHolder: PViewHolder,
         expandableType: AccountItemModel
     ) {
-        if (expandableType.accountItems.isEmpty()) {
+
+        if (expandableType.availableAmounts.isEmpty()) {
             expandableRecyclerInterface.selectParentItem(expandableType)
         } else {
             if (expandableType.isExpanded) {
                 expandableViewHolder.availableBalance.visibility = View.VISIBLE
-                expandableViewHolder.closeImage.visibility = View.GONE
-                expandableViewHolder.upArrowImg.visibility = View.VISIBLE
+                expandableViewHolder.expandIcon.visibility = View.GONE
+                expandableViewHolder.collapseIcon.visibility = View.VISIBLE
             } else {
                 expandableViewHolder.availableBalance.visibility = View.GONE
-                expandableViewHolder.closeImage.visibility = View.VISIBLE
-                expandableViewHolder.upArrowImg.visibility = View.GONE
+                expandableViewHolder.expandIcon.visibility = View.VISIBLE
+                expandableViewHolder.collapseIcon.visibility = View.GONE
             }
+
+            // 30fps = 32 ms per frame + some allowance,
+            // 99th percentile of android devices can render a frame in 36ms
+            expandableViewHolder.collapseIcon.postDelayed({
+                notifyItemChanged(position)
+            }, minRenderTime)
         }
 
-        notifyDataSetChanged()
     }
 
     override fun onExpandedClick(

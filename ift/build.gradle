@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id "androidx.navigation.safeargs.kotlin"
+    id "com.google.gms.google-services"
 }
 
 android {
@@ -33,14 +35,9 @@ android {
     }
     buildFeatures {
         viewBinding true
-        dataBinding true
     }
-
 }
 
-kapt {
-    generateStubs = true
-}
 
 ext {
     koin_version = '3.0.1'
@@ -72,5 +69,10 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    implementation 'com.airbnb.android:lottie:3.7.0'
+
+
+
 
 }

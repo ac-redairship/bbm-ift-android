@@ -1,6 +1,8 @@
-package com.ocbc.transfer
+package com.redairship.ocbc.transfer
 
 class InsufficientBalanceException() : Exception()
+
+class AcceptSameDayTransferFee() : Exception()
 
 class NoInternetException : Exception("Please check your network connection and try again.")
 

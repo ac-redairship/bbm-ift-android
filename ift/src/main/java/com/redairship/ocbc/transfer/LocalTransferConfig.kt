@@ -1,4 +1,4 @@
-package com.ocbc.transfer
+package com.redairship.ocbc.transfer
 
 import android.app.Activity
 import android.content.Context

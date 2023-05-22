@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:text="@string/insufficient_balance_description"
         android:textSize="16sp"
+        android:layout_marginBottom="@dimen/ras_components_bb_spacing_large"
         android:textColor="@color/ras_components_bb_color_grey_700"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintBottom_toTopOf="@id/bottom_layout" />
@@ -32,27 +33,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
-        android:layout_marginBottom="?attr/ras_components_themeSpacingLarge"
-        android:paddingVertical="?attr/ras_components_themeSpacingLarge"
+        android:clipChildren="false"
+        android:clipToOutline="false"
+        android:clipToPadding="false"
+        android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
         app:layout_constraintBottom_toBottomOf="parent">
-        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+        <com.redairship.ocbc.bb.components.views.buttons.BBSecondaryButton
             android:id="@+id/bt_okay"
             android:layout_width="0dp"
             android:layout_height="53dp"
             android:layout_weight="1"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/ras_components_bb_spacing_large"
             android:layout_marginRight="@dimen/size_8dp"
-            android:background="@drawable/edittext_grey700_round_corner"
-            android:textSize="@dimen/ras_components_bb_spacing_normal"
             android:textColor="@color/ras_components_bb_color_grey_700"
-            android:text="@string/out_of_date_update_buttontitle"
+            app:ras_components_label="@string/out_of_date_update_buttontitle"
             app:ras_components_textWeight="semi_bold" />
 
         <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
             android:id="@+id/bt_changeaccount"
             android:layout_width="0dp"
             android:layout_height="53dp"
+            android:layout_marginBottom="@dimen/ras_components_bb_spacing_large"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/size_8dp"
             app:ras_components_label="@string/change_account" />

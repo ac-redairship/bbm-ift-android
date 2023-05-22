@@ -1,5 +1,6 @@
 package com.redairship.ocbc.transfer.presentation.common
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,9 +27,9 @@ class InsufficientBalanceBottomSheet : BBBottomSheet() {
             dismiss()
         }
         binding.btChangeaccount.setOnClickListener {
-            dismiss()
             onChangeAccountClicked?.invoke()
         }
     }
+
 
 }
