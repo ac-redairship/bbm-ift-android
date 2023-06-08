@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import com.ocbc.transfer.R
 import com.redairship.ocbc.transfer.model.AccountItemModel
@@ -82,14 +81,14 @@ abstract class BaseTransferFragment<VB : ViewBinding>: BaseFragment() {
             TransferStatus.TransferFrom -> {
                 sharedViewModel.updateLocalTransferData(
                     localTransferData.copy(
-                        selectFromAc = item
+                        senderAccountData = item
                     )
                 )
             }
             TransferStatus.TransferToMyAccounts -> {
                 sharedViewModel.updateLocalTransferData(
                     localTransferData.copy(
-                        selectToAc = item
+                        recipientAccountData = item
                     )
                 )
             }

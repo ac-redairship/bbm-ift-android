@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#33FFFFFF"
     android:padding="@dimen/ras_components_bb_text_size_16_sp"
     tools:background="@color/ras_components_bb_color_grey_600">
 
@@ -28,6 +27,7 @@
         android:text="0.00"
         android:textColor="@color/ras_components_bb_color_white"
         android:textSize="@dimen/ras_components_bb_text_size_16_sp"
+        android:maxLength="13"
         app:layout_constraintEnd_toStartOf="@+id/tv_currency"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"

@@ -67,24 +67,20 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-                <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                <com.redairship.ocbc.bb.components.views.buttons.BBSecondaryButton
                     android:id="@+id/bt_newtransfer"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/size_8dp"
+                    android:layout_marginEnd="@dimen/size_8dp"
                     android:layout_weight="1"
-                    android:background="@drawable/edittext_grey700_transparant_round_corner"
                     android:gravity="center"
-                    android:text="@string/new_transfer"
-                    android:textColor="@color/ras_components_bb_color_grey_700"
-                    android:textSize="@dimen/ras_components_bb_spacing_normal"
-                    app:ras_components_textWeight="semi_bold" />
+                    app:ras_components_label="@string/new_transfer" />
 
                 <com.redairship.ocbc.bb.components.views.buttons.BBPrimaryButton
                     android:id="@+id/bt_done"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/size_8dp"
+                    android:layout_marginStart="@dimen/size_8dp"
                     android:layout_weight="1"
                     app:ras_components_label="@string/done_btn" />
             </LinearLayout>

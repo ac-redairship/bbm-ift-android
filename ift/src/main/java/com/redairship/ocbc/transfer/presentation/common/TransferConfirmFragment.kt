@@ -99,19 +99,19 @@ class TransferConfirmFragment : BaseTransferFragment<FragmentLocaltransferConfir
 
     override fun setViewData(transfertype: TransferStatus?) = with(binding.vTransferDetailsBody) {
 //        showCoachBox()
-        val selectToAc = localTransferData.selectToAc
-        val hasFractions = selectToAc.amount.currency.defaultFractionDigits > 0
-        val decimalFormat = getDecimalFormat(hasFractions, selectToAc.amount.locale)
+        val recipientAccountData = localTransferData.recipientAccountData
+        val hasFractions = recipientAccountData.amount.currency.defaultFractionDigits > 0
+        val decimalFormat = getDecimalFormat(hasFractions, recipientAccountData.amount.locale)
 
         tvConfirmTitle.text = getString(
             R.string.you_have_send_to,
-            decimalFormat.format(selectToAc.amount.value.movePointLeft(2)),
-            selectToAc.currency)
-        tvSendtoName.text = selectToAc.displayName
-        tvSendtoAccount.text = "${selectToAc.accountNumber} - ${selectToAc.bankName}"
+            decimalFormat.format(recipientAccountData.amount.value.movePointLeft(2)),
+            recipientAccountData.currency)
+        tvSendtoName.text = recipientAccountData.displayName
+        tvSendtoAccount.text = "${recipientAccountData.accountNumber} - ${recipientAccountData.bankName}"
 
 
-        tvReviewAccountDetails.text = localTransferData.selectFromAc.accountName
+        tvReviewAccountDetails.text = localTransferData.senderAccountData.accountName
         tvReviewValueDate.text = convertStrToDateFormat(localTransferData.selectedDate)
         tvReviewNoteForPayeeValue.text = localTransferData.remarks
         tvReviewReferenceValue.text = localTransferData.referenceNumber

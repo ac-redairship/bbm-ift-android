@@ -55,7 +55,7 @@
                 android:id="@+id/tf_bottomsheet_another_ocbc_ac_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
+                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
                 app:ras_components_label="Account number"
                 app:ras_components_isError="false"
                 app:ras_components_errorText="Invalid account"/>

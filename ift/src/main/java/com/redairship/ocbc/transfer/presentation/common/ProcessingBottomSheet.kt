@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import com.redairship.ocbc.transfer.presentation.base.launchWhenCreated
 import com.ocbc.transfer.databinding.ProcessingPaymentBottomSheetBinding
 import com.redairship.ocbc.transfer.NetworkException
@@ -43,7 +44,6 @@ class ProcessingBottomSheet: BBBottomSheet() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rootBinding.vHandle.isInvisible = true
-        viewModel.doPreSubmit(TransactionPreSubmitType.SUBMIT)
         observeViewModelResponse()
     }
 

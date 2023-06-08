@@ -1,4 +1,4 @@
-package com.redairship.ocbc.transfer.presentation.localtransfer.transferto
+package com.redairship.ocbc.transfer.presentation.transfer.transferto
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

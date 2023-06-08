@@ -13,15 +13,10 @@ import com.redairship.ocbc.bb.components.views.fragments.errors.GenericServerErr
 
 class TransferActivity : AppCompatActivity(), GenericServerErrorFragment.Listener {
 
-    private lateinit var dataBinding: ActivityTransferLocalRevampBinding
-
-//    override fun getLoadingBinding(): LayoutLoadingBinding = dataBinding.loadingLayout
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataBinding = ActivityTransferLocalRevampBinding.inflate(layoutInflater)
-        setContentView(dataBinding.root)
-        enableFullScreenMode()
+        setContentView(R.layout.activity_transfer_local_revamp)
+//        enableFullScreenMode()
     }
 
     private fun enableFullScreenMode() {
@@ -36,10 +31,10 @@ class TransferActivity : AppCompatActivity(), GenericServerErrorFragment.Listene
         }
     }
 
-    var fragment:GenericServerErrorFragment? = null
+    var fragment: GenericServerErrorFragment? = null
 
-    fun showGenericServerErrorScreen(message:String?) {
-        dataBinding.vMainRoot.isVisible = true
+    fun showGenericServerErrorScreen(message: String?) {
+//        dataBinding.vMainRoot.isVisible = true
 
         val tag = GenericServerErrorFragment::class.java.simpleName
         fragment = GenericServerErrorFragment.newInstance(

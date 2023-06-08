@@ -1,13 +1,11 @@
 package com.redairship.ocbc.transfer.presentation.transfer.local.otp
 
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFragment
 import com.redairship.ocbc.transfer.LocalTransferCoordinatorInterface
-import com.redairship.ocbc.transfer.domain.LocalTransferCoordinator
 import com.redairship.ocbc.transfer.utils.DomainException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -57,14 +55,6 @@ class OTPViewModel(
 
     }
 
-    fun goToScanBarcode() {
-
-    }
-
-    fun goToScheduleVideoCall() {
-
-    }
-
     private suspend fun onVerifyOtpError(errorMessage: String, remainingAttempts: Int) {
         delay(ERROR_SHOWING_DELAY)
         _uiState.value = OtpUiState.Error(errorMessage, remainingAttempts)
@@ -73,11 +63,11 @@ class OTPViewModel(
     fun getOTPCountdown() = 60
 
     fun resendOTP() {
-//        coordinator.resendOtp()
-//            .catch {
-//
-//            }
-//            .launchIn(viewModelScope)
+        coordinator.resendOtp()
+            .catch {
+
+            }
+            .launchIn(viewModelScope)
     }
 
     fun getMobileNumber() = ""//passportAuthCoordinatorInterface.otpInfo?.mobileNumber ?: ""

@@ -8,9 +8,8 @@ import java.util.Currency
 
 data class LocalTransferData(
     val functionCode: String = "",
-    val selectFromAc: AccountItemModel = AccountItemModel.init(accountNumber = "", currency = Currency.getInstance("SGD")),
-    val selectToAc: AccountItemModel = AccountItemModel.init(accountNumber = "", currency = Currency.getInstance("SGD")),
-    val selectToAnotherCurrency: AccountItemModel = AccountItemModel.init(accountNumber = "", currency = Currency.getInstance("SGD")),
+    val senderAccountData: AccountItemModel = AccountItemModel.init(accountNumber = "", currency = Currency.getInstance("SGD")),
+    val recipientAccountData: AccountItemModel = AccountItemModel.init(accountNumber = "", currency = Currency.getInstance("SGD")),
     val purpose: String = "",
     val remarks: String = "",
     val referenceNumber: String = "",

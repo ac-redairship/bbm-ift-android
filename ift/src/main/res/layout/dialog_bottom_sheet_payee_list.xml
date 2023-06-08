@@ -109,16 +109,18 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
-            android:layout_marginTop="@dimen/ras_components_bb_spacing_large"
             android:layout_marginBottom="95dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_body">
 
-            <ImageView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/iv_error_message"
-                android:layout_width="139dp"
-                android:layout_height="139dp"
+                android:layout_width="273dp"
+                android:layout_height="273dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/anim_nothing"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/icon_wallet"
                 android:visibility="gone"
@@ -130,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="62dp"
+                android:layout_marginTop="-40dp"
                 android:gravity="center"
                 android:text="Placeholder, copy will be soon finalised"
                 android:textAlignment="center"

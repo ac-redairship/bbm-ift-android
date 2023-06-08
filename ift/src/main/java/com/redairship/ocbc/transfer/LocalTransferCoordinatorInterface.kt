@@ -1,10 +1,8 @@
 package com.redairship.ocbc.transfer
 
-import androidx.fragment.app.Fragment
 import com.redairship.domain.common.Coordinator
+import com.redairship.domain.common.types.OtpInfo
 import com.redairship.domain.common.types.TwoFactorResult
-import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFragment
-import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageType
 import com.redairship.ocbc.transfer.model.*
 import kotlinx.coroutines.flow.Flow
 
@@ -25,9 +23,13 @@ interface LocalTransferCoordinatorInterface: Coordinator {
     suspend fun createPreviewSubmissionModel(e2eeDetails: E2EEDetailsResponse): Flow<E2EEDetailsResponse>
     suspend fun doPreAndSubmit(e2eeDetails: E2EEDetailsResponse, type: TransactionPreSubmitType): Flow<SubmitResponseData>
     fun goToUseMyRate()
+    fun useOldFxRatesScreen(): Boolean
     fun verifyOtp(otp: String): Flow<TwoFactorResult>
     fun goToOneTokenVerification(otpFragment: Any)
     fun goToEmailVerification(otpFragment: Any)
+    fun goToInternalFundsTransferFragment()
+    fun goToTransactionSummary()
+
     fun <LISTENER, CLOSE_LISTENER> showGenericErrorScreen(
         tag: String,
         title: String,
@@ -40,5 +42,8 @@ interface LocalTransferCoordinatorInterface: Coordinator {
         hasCloseIcon: Boolean,
         interceptCloseAction: Boolean
     )
+
+    fun resendOtp(): Flow<OtpInfo>
+
 
 }

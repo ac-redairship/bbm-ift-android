@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.Spanned
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import android.widget.LinearLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -34,9 +36,9 @@ import com.redairship.ocbc.bb.components.extensions.toPx
 import com.redairship.ocbc.bb.components.models.Amount
 import com.redairship.ocbc.bb.components.views.bottomsheet.BBBottomSheet
 import com.redairship.ocbc.bb.components.views.fragments.BaseFragment
-import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFragment
-import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageType
 import com.redairship.ocbc.bb.components.views.textviews.BBOpenSansEditText
+import com.redairship.ocbc.onetokenoffline.features.offlinemode.OneTokenPinFragment
+import com.redairship.ocbc.onetokenoffline.offlinemode.OneTokenPinViewModel
 import com.redairship.ocbc.transfer.AcceptSameDayTransferFee
 import com.redairship.ocbc.transfer.InsufficientBalanceException
 import com.redairship.ocbc.transfer.LocalTransferData
@@ -55,10 +57,8 @@ import com.redairship.ocbc.transfer.presentation.local.LocalTransferViewModel
 import com.redairship.ocbc.transfer.presentation.local.TransferActivity
 import com.redairship.ocbc.transfer.presentation.transfer.local.otp.EmailOTPFragment
 import com.redairship.ocbc.transfer.presentation.transfer.local.otp.OTPViewModel
-import com.redairship.ocbc.transfer.presentation.transfer.local.otp.OneTokenPinFragment
-import com.redairship.ocbc.transfer.presentation.transfer.local.otp.OneTokenPinViewModel
 import com.redairship.ocbc.transfer.presentation.transfer.transferfrom.TransferFromAccountListBottomSheet
-import kotlinx.coroutines.delay
+import com.redairship.onetokenoffline.domain.models.GenerateOtpFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -68,7 +68,7 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 
-interface OnIFTFxContractListener2 {
+interface OnIFTFxContractListener {
     fun onIFTSelectFxContract(contract: FxOtherRate?, isManual: Boolean)
 }
 
@@ -81,23 +81,18 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
     private var hasSelectedADate: Boolean = false
     private var transferStatus: TransferStatus? = null
     private var isKeyboardVisible: Boolean = false
-
+    private var isRecipientViewSetUp: Boolean = false
     val sharedViewModel: LocalTransferViewModel by activityViewModels()
     val oneTokenPinViewModel: OneTokenPinViewModel by sharedViewModel()
     val emailOtpViewModel: OTPViewModel by sharedViewModel()
 
     private lateinit var localTransferData: LocalTransferData
 
+    private var exchangeRate = 1f
+
     var insufficientDialog: BBBottomSheet? = null
     private val oneTokenPinFragment by lazy {
-        OneTokenPinFragment.newInstance(
-            header = "OneToken PIN",
-            subHeader = "Enter your OneToken PIN.",
-            resendLabel = "Forgot PIN?",
-            didNotReceiveLabel = "",
-            timeLimit = 0,
-            maxLength = 6
-        )
+        OneTokenPinFragment.newInstance(flow = GenerateOtpFlow.ApproveRequest)
     }
     private val otpFragment by lazy {
         EmailOTPFragment.newInstance(
@@ -112,7 +107,6 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
     }
 
     private val processingBottomSheet by lazy { ProcessingBottomSheet.newInstance() }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -137,8 +131,14 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
             bottomSheetBehavior.peekHeight =
                 (binding.body.root.measuredHeight - (amountsBinding.rlIndicative.bottom)) // set the peek height to 200 pixels
         } else {
-            bottomSheetBehavior.peekHeight =
-                (binding.body.root.measuredHeight - (amountsBinding.tvAmountError.bottom - additionalPadding)) // set the peek height to 200 pixels
+            if (amountsBinding.amountBodyViewShimmer.isVisible) {
+                bottomSheetBehavior.peekHeight = 375.toPx
+            } else {
+                bottomSheetBehavior.peekHeight =
+                    (binding.body.root.measuredHeight - (amountsBinding.tvAmountError.bottom - additionalPadding)) // set the peek height to 200 pixels
+            }
+
+
         }
 
         bottomSheetBehavior.state = STATE_COLLAPSED
@@ -160,19 +160,20 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
         }
         sharedViewModel.localTransferData.observe(viewLifecycleOwner) {
             localTransferData = it
+            setIndicativeRate()
         }
     }
 
     private fun setupViews() {
         detailsBinding.btNext.isEnabled = false
-        amountsBinding.accountName.text = localTransferData.selectToAc.displayName
+        amountsBinding.accountName.text = localTransferData.recipientAccountData.displayName
         amountsBinding.accountNumber.text =
-            "${localTransferData.selectToAc.accountNumber} - OCBC Bank"
+            "${localTransferData.recipientAccountData.accountNumber} - OCBC Bank"
 
         binding.tvCompactHeaderTitle.text =
-            localTransferData.selectToAc.accountName
+            localTransferData.recipientAccountData.accountName
         binding.tvCompactHeaderSub.text =
-            localTransferData.selectToAc.accountNumber
+            localTransferData.recipientAccountData.accountNumber
         binding.tvCompactHeaderDesc.text = "1,450.00 SGD"
     }
 
@@ -276,10 +277,10 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
         }
 
 
-        val selectToAc = localTransferData.selectToAc
-        val selectToAnotherCurrency = localTransferData.selectToAnotherCurrency
+        var recipientAccountData = localTransferData.recipientAccountData
+        var senderAccountData = localTransferData.senderAccountData
         with(amountsBinding.sendCurrencyView) {
-            val currency = selectToAc.currency
+            val currency = recipientAccountData.currency
             amountsBinding.sendCurrencyView.post {
                 setCurrencyView(
                     amountsBinding.sendCurrencyView,
@@ -287,52 +288,107 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                 )
             }
 
-            var previousValidInput: CharSequence = ""
-            val inputFilters = arrayOf(
-                InputFilter { source, _, _, dest, dstart, dend ->
-                    val hasFractions = selectToAc.amount.currency.defaultFractionDigits > 0
-                    val decimalFormat = getDecimalFormat(hasFractions, selectToAc.amount.locale)
-                    filterInput(
-                        source,
-                        hasFractions,
-                        decimalFormat,
-                        previousValidInput,
-                        dest,
-                        dstart,
-                        dend
-                    )?.also {
-                        previousValidInput = it
-                    }
-                }
-            )
+            binding.tvAmount.filters = getInputFilters(recipientAccountData)
 
-            binding.tvAmount.filters = inputFilters
-
-            var isUpdating =
-                false // flag to indicate whether text is being updated programmatically
+            var isUpdating = false // flag to indicate whether text is being updated programmatically
             binding.tvAmount.doAfterTextChanged {
-                handleAmountTextChange(binding.tvAmount, it, selectToAc, isUpdating, {
+                recipientAccountData = localTransferData.recipientAccountData
+                senderAccountData = localTransferData.senderAccountData
+                handleAmountTextChange(binding.tvAmount, it, senderAccountData, isUpdating, {
                     isUpdating = true
                 }, { value ->
+                    val decimalFormat = getDecimalFormat(senderAccountData.currency.defaultFractionDigits > 0, recipientAccountData.amount.locale)
+                    val exchangedValue = value.movePointLeft(senderAccountData.currency.defaultFractionDigits) * exchangeRate.toBigDecimal()
+                    if (binding.tvAmount.isFocused) {
+                        amountsBinding.recipientCurrencyView.binding.tvAmount.setText(decimalFormat.format(exchangedValue))
+                    }
+
+                    if (localTransferData.defaultMinLimit.toBigDecimal() > value) {
+                        amountsBinding.tvAmountError.text = "Please enter amount more than ${
+                            decimalFormat.format(
+                                localTransferData.defaultMinLimit.toBigDecimal().movePointLeft(2)
+                            )
+                        } SGD"
+                    } else if (localTransferData.defaultMaxLimit.toBigDecimal() < value) {
+                        amountsBinding.tvAmountError.text = "Please enter amount less than ${
+                            decimalFormat.format(
+                                localTransferData.defaultMaxLimit.toBigDecimal().movePointLeft(2)
+                            )
+                        } SGD"
+                    }
+
+                    when (sharedViewModel.responseFlow) {
+                        LocalTransferViewModel.ResponseFlow.SENDER -> {
+                            sharedViewModel.updateLocalTransferData(
+                                localTransferData.copy(
+                                    senderAccountData = senderAccountData.copy(
+                                        amount = amount.copy(
+                                            value = value
+                                        )
+                                    )
+                                )
+                            )
+                        }
+                        LocalTransferViewModel.ResponseFlow.RECIPIENT -> {
+                            sharedViewModel.updateLocalTransferData(
+                                localTransferData.copy(
+                                    recipientAccountData = recipientAccountData.copy(
+                                        amount = amount.copy(
+                                            value = value
+                                        )
+                                    )
+                                )
+                            )
+                        }
+                    }
+
+                    this@InternalFundsTransferFragment.binding.tvCompactHeaderDesc.text = "${binding.tvAmount.text} ${recipientAccountData.amount.currency.currencyCode}"
+                })
+                isUpdating = false
+            }
+
+            this.binding.tvCurrency.setOnClickListener {
+                openCurrencyListView(true, currency.currencyCode)
+            }
+        }
+
+        with(amountsBinding.recipientCurrencyView) {
+            var isUpdating = false
+
+            binding.tvAmount.setOnEditorActionListener { textView, i, keyEvent ->
+                clearFocus()
+                false
+            }
+            binding.tvCurrency.setOnClickListener {
+                openCurrencyListView(false, null)
+            }
+
+            binding.tvAmount.doAfterTextChanged {
+                val selectToAnotherCurrency = localTransferData.recipientAccountData
+                handleAmountTextChange(binding.tvAmount, it, selectToAnotherCurrency, isUpdating, {
+                    isUpdating = true
+                }, { value ->
+                    val decimalFormat = getDecimalFormat(selectToAnotherCurrency.currency.defaultFractionDigits > 0, recipientAccountData.amount.locale)
+                    val exchangedValue = value.movePointLeft(selectToAnotherCurrency.currency.defaultFractionDigits) / exchangeRate.toBigDecimal()
+                    if (binding.tvAmount.isFocused) {
+                        amountsBinding.sendCurrencyView.binding.tvAmount.setText(decimalFormat.format(exchangedValue))
+                    }
+
                     sharedViewModel.updateLocalTransferData(
                         localTransferData.copy(
-                            selectToAc = selectToAc.copy(
+                            recipientAccountData = selectToAnotherCurrency.copy(
                                 amount = amount.copy(
                                     value = value
                                 )
                             )
                         )
                     )
-                    this@InternalFundsTransferFragment.binding.tvCompactHeaderDesc.text =
-                        "${binding.tvAmount.text} ${selectToAc.amount.currency.currencyCode}"
                 })
                 isUpdating = false
             }
-
-            this.binding.tvCurrency.setOnClickListener {
-                openCurrencyListView(currency.currencyCode)
-            }
         }
+
+
         detailsBinding.tfRemarks.apply {
             helperText = "0 / 140"
             binding.etInput.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(140))
@@ -373,8 +429,14 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
 
         detailsBinding.btNext.setOnClickListener {
             sharedViewModel.doPreSubmit(TransactionPreSubmitType.PREVIEW)
-//
-//            sharedViewModel.goToOneTokenVerification()
+        }
+
+        amountsBinding.tvUseMyRate.setOnClickListener {
+            sharedViewModel.goToUseMyRate()
+        }
+
+        amountsBinding.tvEditFxRate.setOnClickListener {
+            sharedViewModel.goToUseMyRate()
         }
 
         handleFxContract()
@@ -394,26 +456,12 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                     val remainingAttempts = uiState.remainingAttempts
                     otpFragment.setAttempts(remainingAttempts)
                     if (remainingAttempts <= 0) {
-//                        viewModel.showGenericErrorScreen(
-//                            tag = "exceeded_attempt",
-//                            title = getString(R.string.ras_passportauth_otp_max_attempt_error_title),
-//                            description = getString(R.string.ras_passportauth_otp_max_attempt_error_description),
-//                            buttonText = getString(R.string.ras_passportauth_get_in_touch),
-//                            type = GenericMessageType.Warning.id,
-//                            interceptDoneAction = true,
-//                            listener = this@CompleteApplicationFragment,
-//                            closeListener = null
-//                        )
                         return@observe
                     }
                 }
 
                 is OTPViewModel.OtpUiState.Success -> {
-                    otpFragment.binding.pinEntryView.text = ""
-                    childFragmentManager.popBackStackImmediate()
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        openProcessingBottomView()
-                    }
+                    openProcessingBottomView()
                 }
 
                 else -> {
@@ -423,40 +471,35 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
         }
     }
 
+
     private fun handleOneTokenPin() {
-        oneTokenPinViewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            when (uiState) {
-                is OneTokenPinViewModel.OtpUiState.Error -> {
-
-                }
-
-                is OneTokenPinViewModel.OtpUiState.Success -> {
-                    oneTokenPinFragment.binding.pinEntryView.text = ""
-                    openOtpFragment()
-                }
-
-                else -> {
-                    oneTokenPinFragment.binding.btSubmit.isLoading = false
-                }
-            }
-        }
+//        oneTokenPinViewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+//            when (uiState) {
+//                is OneTokenPinViewModel.OtpUiState.Error -> {
+//
+//                }
+//
+//                is OneTokenPinViewModel.OtpUiState.Success -> {
+//                    oneTokenPinFragment.binding.pinEntryView.text = ""
+//                    openOtpFragment()
+//                }
+//
+//                else -> {
+//                    oneTokenPinFragment.binding.btSubmit.isLoading = false
+//                }
+//            }
+//        }
     }
 
     private fun openOneTokenPin() {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.v_root, oneTokenPinFragment)
-            .addToBackStack("OneTokenPinFragment")
-            .commit()
+        sharedViewModel.goToOneTokenVerification()
     }
 
     private fun openOtpFragment() {
         if (oneTokenPinFragment.isAdded) {
             childFragmentManager.popBackStackImmediate()
         }
-        childFragmentManager.beginTransaction()
-            .replace(R.id.v_root, otpFragment)
-            .addToBackStack("OtpFragment")
-            .commit()
+        sharedViewModel.goToEmailVerification(otpFragment)
     }
 
     private fun handleAmountTextChange(
@@ -480,22 +523,10 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
             val input = newText.toString().replace("[^\\d]".toRegex(), "")
             val decimalFormat = getDecimalFormat(hasFractions, account.amount.locale)
             if (localTransferData.defaultMinLimit.toBigDecimal() > input.toBigDecimal()) {
-                amountsBinding.tvAmountError.text = "Please enter amount more than ${
-                    decimalFormat.format(
-                        localTransferData.defaultMinLimit.toBigDecimal()
-                            .movePointLeft(2)
-                    )
-                } SGD"
                 amountsBinding.tvAmountError.isVisible = true
                 amountsBinding.vFocusIndicator.setBackgroundColor(Color.parseColor("#EE6A71"))
                 detailsBinding.btNext.isEnabled = false
             } else if (localTransferData.defaultMaxLimit.toBigDecimal() < input.toBigDecimal()) {
-                amountsBinding.tvAmountError.text = "Please enter amount less than ${
-                    decimalFormat.format(
-                        localTransferData.defaultMaxLimit.toBigDecimal()
-                            .movePointLeft(2)
-                    )
-                } SGD"
                 amountsBinding.vFocusIndicator.setBackgroundColor(Color.parseColor("#EE6A71"))
                 amountsBinding.tvAmountError.isVisible = true
                 detailsBinding.btNext.isEnabled = false
@@ -516,8 +547,7 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
             }
 
             if (!hasFractions) {
-                val dollars = input
-                val formattedDecimal: String = decimalFormat.format(dollars.toLong())
+                val formattedDecimal: String = decimalFormat.format(input.toLong())
                 editText.text = "$formattedDecimal".toEditable()
             }
 
@@ -559,7 +589,7 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                         detailsBinding.btNext.isLoading = false
                         when (it.throwable) {
                             is InsufficientBalanceException -> {
-                                openInsufficientBalanceView()
+                                if (transferStatus != TransferStatus.TransferMakerReview) openInsufficientBalanceView()
                             }
 
                             is AcceptSameDayTransferFee -> {
@@ -610,96 +640,104 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
             .collectLatest {
                 when (it) {
                     is UiState.Success -> {
-                        setupRecipientView(it)
+                        setupExchangeView(sharedViewModel.responseFlow, it)
+                        amountsBinding.rlIndicative.isVisible = true
                     }
 
                     is UiState.Error -> {
-                        setShowAndHideSkeletonView(false)
+                        setShowAndHideSkeletonView(false, sharedViewModel.fxContract.value.data?.isUserRate ?: false)
                     }
                 }
             }
     }
 
-    private fun setupRecipientView(uiState: UiState.Success<FxContract>) {
-        val selectFromAc = localTransferData.selectFromAc
+    private fun setupExchangeView(responseFlow: LocalTransferViewModel.ResponseFlow, uiState: UiState.Success<FxContract>) {
+        val senderAccountData = localTransferData.senderAccountData
+        val recipientAccountData = localTransferData.recipientAccountData
         val buyCurrency = Currency.getInstance(uiState.data.contractBuyCurrency)
         sharedViewModel.getProductTransactionLimit(localTransferData.selectedDate)
-        sharedViewModel.updateLocalTransferData(
-            localTransferData.copy(
-                selectToAnotherCurrency = localTransferData.selectToAnotherCurrency.copy(
+
+        if (isRecipientViewSetUp && responseFlow == LocalTransferViewModel.ResponseFlow.SENDER) {
+            sharedViewModel.updateLocalTransferData(
+                localTransferData.copy(
+                    senderAccountData = senderAccountData.copy(
+                        currency = buyCurrency
+                    ),
+                    fxContract = uiState.data
+                )
+            )
+            with(amountsBinding.sendCurrencyView) {
+                binding.tvAmount.filters = getInputFilters(senderAccountData)
+                exchangeRate = uiState.data.fxRate ?: 1.0f
+
+                amount = Amount(
+                    value = BigDecimal.ZERO,
+                    symbol = buyCurrency.symbol,
+                    locale = Locale.ENGLISH,
                     currency = buyCurrency
-                ),
-                fxContract = uiState.data
-            )
-        )
-        setShowAndHideSkeletonView(false)
-        amountsBinding.sendCurrencyView.binding.tvAmountLabel.text = "You send"
-        with(amountsBinding.recipientCurrencyView) {
-            var previousValidInput: CharSequence = ""
-            val inputFilters = arrayOf(
-                InputFilter { source, _, _, dest, dstart, dend ->
-                    val hasFractions = selectFromAc.amount.currency.defaultFractionDigits > 0
-                    val decimalFormat = getDecimalFormat(hasFractions, selectFromAc.amount.locale)
-                    filterInput(
-                        source,
-                        hasFractions,
-                        decimalFormat,
-                        previousValidInput,
-                        dest,
-                        dstart,
-                        dend
-                    )?.also {
-                        previousValidInput = it
-                    }
-                }
-            )
-            binding.tvAmount.filters = inputFilters
-            var isUpdating =
-                false // flag to indicate whether text is being updated programmatically
-            binding.tvAmount.doAfterTextChanged {
-                val selectToAnotherCurrency =
-                    localTransferData.selectToAnotherCurrency
-                        ?: return@doAfterTextChanged
-                handleAmountTextChange(binding.tvAmount, it, selectToAnotherCurrency, isUpdating, {
-                    isUpdating = true
-                }, { value ->
-                    sharedViewModel.updateLocalTransferData(
-                        localTransferData.copy(
-                            selectToAnotherCurrency = selectToAnotherCurrency.copy(
-                                amount = amount.copy(
-                                    value = value
-                                )
-                            )
-                        )
-                    )
-                })
-                isUpdating = false
-            }
+                )
 
-            amount = Amount(
-                value = uiState.data.indicativeAmount?.toBigDecimal() ?: BigDecimal.ZERO,
-                symbol = buyCurrency.symbol,
-                locale = Locale.ENGLISH,
-                currency = buyCurrency
-            )
+                setCurrencyView(this, buyCurrency.currencyCode)
 
-            setCurrencyView(this, buyCurrency.currencyCode)
-
-//            doAfterTextChanged { editable ->
-//                selectToAnotherCurrency.amount =
-//                    selectToAnotherCurrency.amount.copy(
-//                        value = editable.toString().toBigDecimal()
-//                    )
-//
-//            }
-            this.binding.tvAmount.setOnEditorActionListener { textView, i, keyEvent ->
-                clearFocus()
-                false
-            }
-            this.binding.tvCurrency.setOnClickListener {
-                openCurrencyListView(buyCurrency.currencyCode)
             }
         }
+
+        if (!isRecipientViewSetUp || responseFlow == LocalTransferViewModel.ResponseFlow.RECIPIENT) {
+            sharedViewModel.updateLocalTransferData(
+                localTransferData.copy(
+                    recipientAccountData = localTransferData.recipientAccountData.copy(
+                        currency = buyCurrency
+                    ),
+                    fxContract = uiState.data
+                )
+            )
+
+            with(amountsBinding.recipientCurrencyView) {
+                binding.tvAmount.filters = getInputFilters(recipientAccountData)
+                exchangeRate = uiState.data.fxRate ?: 1.0f
+
+                amount = Amount(
+                    value = uiState.data.indicativeAmount?.toBigDecimal() ?: BigDecimal.ZERO,
+                    symbol = buyCurrency.symbol,
+                    locale = Locale.ENGLISH,
+                    currency = buyCurrency
+                )
+
+                setCurrencyView(this, buyCurrency.currencyCode)
+
+            }
+        }
+
+
+        setShowAndHideSkeletonView(false, uiState.data.isUserRate)
+        if (uiState.data.isUserRate) {
+            amountsBinding.tvContractValue.text = uiState.data.quoteId
+        }
+        amountsBinding.sendCurrencyView.binding.tvAmountLabel.text = "You send"
+
+        isRecipientViewSetUp = true
+    }
+
+    private fun getInputFilters(account: AccountItemModel): Array<InputFilter>? {
+        val hasFractions = account.amount.currency.defaultFractionDigits > 0
+        val decimalFormat = getDecimalFormat(hasFractions, account.amount.locale)
+        var previousValidInput: CharSequence = ""
+        return arrayOf(
+            InputFilter.LengthFilter(if (!hasFractions) 15 else 16),
+            InputFilter { source, _, _, dest, dstart, dend ->
+                filterInput(
+                    source,
+                    hasFractions,
+                    decimalFormat,
+                    previousValidInput,
+                    dest,
+                    dstart,
+                    dend
+                )?.also {
+                    previousValidInput = it
+                }
+            }
+        )
     }
 
     private fun filterInput(
@@ -748,33 +786,51 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
         return DecimalFormat(pattern, symbols)
     }
 
-    private fun openCurrencyListView(currency: String?) {
-        CurrencyListBottomSheet(currency).apply {
+    private fun openCurrencyListView(isSender: Boolean, currency: String?) {
+        CurrencyListBottomSheet(currency ?: sharedViewModel.fxContract.value.data?.contractBuyCurrency).apply {
             onSelectedCurrencyClicked = { currency ->
-                setShowAndHideSkeletonView(true)
-                sharedViewModel.getCounterFX(currency.code)
+                setShowAndHideSkeletonView(true, sharedViewModel.fxContract.value.data?.isUserRate ?: false)
+                sharedViewModel.getCounterFX(isSender, currency.code)
             }
         }.show(childFragmentManager, "CurrencyListBottomSheet")
     }
 
     private fun openInsufficientBalanceView() {
         insufficientDialog = InsufficientBalanceBottomSheet().apply {
-            onChangeAccountClicked = {
-                TransferFromAccountListBottomSheet.newInstance(
-                    TransferStatus.TransferFrom,
-                    this@InternalFundsTransferFragment
-                ).show(childFragmentManager, "TransferFromAccountListBottomSheet")
+            onChangeAccountClicked = { changeAccountClicked ->
+                if (changeAccountClicked) {
+                    TransferFromAccountListBottomSheet.newInstance(
+                        TransferStatus.TransferFrom,
+                        this@InternalFundsTransferFragment
+                    ).show(childFragmentManager, "TransferFromAccountListBottomSheet")
+                } else {
+                    transferStatus = TransferStatus.TransferMakerReview
+                    setViewData(TransferStatus.TransferMakerReview)
+                }
             }
         }
         insufficientDialog?.show(childFragmentManager, "InsufficientBalanceBottomSheet")
     }
 
     private fun openProcessingBottomView() {
-        processingBottomSheet.apply {
-            onProcessingFinish = {
-                findNavController().navigate(InternalFundsTransferFragmentDirections.actiontoconfirm())
+        Log.d("IFT Frag", "openProcessingBottomView")
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            requireActivity().supportFragmentManager.popBackStackImmediate(otpFragment::class.java.simpleName, POP_BACK_STACK_INCLUSIVE)
+
+            processingBottomSheet.apply {
+                onProcessingFinish = {
+                    if (transferStatus == TransferStatus.TransferMakerReview) {
+                        processingBottomSheet.dismiss()
+                        sharedViewModel.goToTransactionSummary()
+//                        findNavController().navigate(InternalFundsTransferFragmentDirections.actiontoconfirm())
+                    }
+                }
             }
-        }.show(childFragmentManager, "processingBottomSheet")
+            processingBottomSheet.show(requireActivity().supportFragmentManager, "processingBottomSheet")
+            sharedViewModel.doPreSubmit(TransactionPreSubmitType.SUBMIT)
+        }
+
     }
 
     private fun openScrollCalendar() {
@@ -796,10 +852,10 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
     }
 
     fun setViewData(transfertype: TransferStatus?) {
-        val selectToAc = localTransferData.selectToAc
+        val recipientAccountData = localTransferData.recipientAccountData
 
-        amountsBinding.accountName.text = selectToAc.displayName
-        amountsBinding.accountNumber.text = "${selectToAc.accountNumber} - OCBC Bank"
+        amountsBinding.accountName.text = recipientAccountData.displayName
+        amountsBinding.accountNumber.text = "${recipientAccountData.accountNumber} - OCBC Bank"
 
         when (transfertype) {
             TransferStatus.TransferMakerReview -> {
@@ -807,7 +863,7 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                 detailsBinding.detailReview.isVisible = true
 
                 detailsBinding.tvReviewAccountDetails.text =
-                    "${detailsBinding.transferfromAccountDesp.text} - ${selectToAc.accountNumber} ${selectToAc.currency}"
+                    "${detailsBinding.transferfromAccountDesp.text} - ${recipientAccountData.accountNumber} ${recipientAccountData.currency}"
                 detailsBinding.tvReviewValueDate.text =
                     convertStrToDateFormat(localTransferData.selectedDate)
 
@@ -832,15 +888,15 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
 
                 var sendMoney = getString(
                     R.string.send_money,
-                    localTransferData.selectToAnotherCurrency?.amount?.value.toString()
+                    localTransferData.recipientAccountData?.amount?.value.toString()
                 )
-                if (localTransferData.selectToAnotherCurrency?.amount?.value?.toDouble() == 0.0) {
-                    val hasFractions = selectToAc.amount.currency.defaultFractionDigits > 0
-                    val decimalFormat = getDecimalFormat(hasFractions, selectToAc.amount.locale)
+                if (localTransferData.recipientAccountData?.amount?.value?.toDouble() == 0.0) {
+                    val hasFractions = recipientAccountData.amount.currency.defaultFractionDigits > 0
+                    val decimalFormat = getDecimalFormat(hasFractions, recipientAccountData.amount.locale)
 
                     sendMoney = getString(
                         R.string.send_money,
-                        "${amountsBinding.sendCurrencyView.binding.tvAmount.text} ${selectToAc.amount.currency.currencyCode}"
+                        "${amountsBinding.sendCurrencyView.binding.tvAmount.text} ${recipientAccountData.amount.currency.currencyCode}"
                     )
 
 
@@ -850,22 +906,7 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                 binding.body.btReviewNext.isVisible = true
                 binding.body.btReviewNext.label = sendMoney
                 binding.body.btReviewNext.setOnClickListener {
-//                    detailsBinding.btNext.performClick()
-//                    sharedViewModel.showGenericErrorScreen(
-//                        "no_reviewer",
-//                        "No approver set up",
-//                        "Please set up an approver in Velocity to make a transfer",
-//                        "Okay",
-//                        GenericMessageType.Warning.id,
-//                        true,
-//                        object : GenericMessageFragment.Listener {
-//                            override fun onGenericMessageDoneButtonClicked(fragment: GenericMessageFragment) {
-//                                childFragmentManager.popBackStackImmediate()
-//                            }
-//                        },
-//                        null
-//                    )
-                    if (localTransferData.selectFromAc.is1MC) {
+                    if (localTransferData.senderAccountData.is1MC) {
                         openOneTokenPin()
                     } else {
                         openOtpFragment()
@@ -877,7 +918,7 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                 amountsBinding.recipientCurrencyView.binding.tvAmount.isEnabled = false
                 amountsBinding.sendCurrencyView.downImage = false
                 amountsBinding.recipientCurrencyView.downImage = false
-                amountsBinding.tvUsemyrate.isVisible = false
+                amountsBinding.tvUseMyRate.isVisible = false
                 bottomSheetBehavior.state = STATE_COLLAPSED
 
             }
@@ -886,9 +927,9 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
                 detailsBinding.detailReview.isVisible = false
 
                 detailsBinding.transferfromAccount.text =
-                    localTransferData.selectFromAc.accountNumber + " - " + localTransferData.selectFromAc.currency
+                    localTransferData.senderAccountData.accountNumber + " - " + localTransferData.senderAccountData.currency
                 detailsBinding.transferfromAccountDesp.text =
-                    localTransferData.selectFromAc.accountName
+                    localTransferData.senderAccountData.accountName
 
                 updateValueDate(localTransferData.selectedDate)
                 detailsBinding.tfRemarks.text = localTransferData.remarks
@@ -931,40 +972,62 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
         view.requestLayout()
     }
 
-    private fun setShowAndHideSkeletonView(showhide: Boolean) {
-        if (showhide) {
-            amountsBinding.topShimmer.startShimmer()
-            amountsBinding.amountbobyViewShimmer.isVisible = true
-            amountsBinding.amountbobyView.isVisible = false
+    private fun setShowAndHideSkeletonView(shouldShow: Boolean, userRate: Boolean = false) {
+        if (shouldShow) {
+            if (amountsBinding.recipientCurrencyView.isVisible) {
+                amountsBinding.vIndicativeRateShimmer.startShimmer()
+                amountsBinding.vIndicativeRateShimmer.isVisible = true
+                amountsBinding.labelIndicativeRate.isVisible = false
+                amountsBinding.tvIndicativeRate.isVisible = false
+                amountsBinding.tvUseMyRate.isVisible = false
+                amountsBinding.tvEditFxRate.isVisible = false
+                amountsBinding.tvContractValue.isVisible = false
+                amountsBinding.tvContractLabel.isVisible = false
+            } else {
+                amountsBinding.topShimmer.startShimmer()
+                amountsBinding.amountBodyViewShimmer.isVisible = true
+                amountsBinding.amountBodyView.isVisible = false
+            }
+
         } else {
             amountsBinding.topShimmer.stopShimmer()
-            amountsBinding.amountbobyViewShimmer.isVisible = false
-            amountsBinding.amountbobyView.isVisible = true
+            amountsBinding.amountBodyViewShimmer.isVisible = false
+            amountsBinding.amountBodyView.isVisible = true
             amountsBinding.secondCurrencyLine.isVisible = true
-            setIndicateRate()
+
+            if (amountsBinding.vIndicativeRateShimmer.isVisible) {
+                amountsBinding.vIndicativeRateShimmer.stopShimmer()
+                amountsBinding.labelIndicativeRate.isVisible = true
+                amountsBinding.tvIndicativeRate.isVisible = true
+                amountsBinding.vIndicativeRateShimmer.isVisible = false
+            }
+
+            if (userRate) {
+                amountsBinding.tvEditFxRate.isVisible = true
+                amountsBinding.tvUseMyRate.isVisible = false
+                amountsBinding.tvContractLabel.isVisible = true
+                amountsBinding.tvContractValue.isVisible = true
+            } else {
+                amountsBinding.tvEditFxRate.isVisible = false
+                amountsBinding.tvUseMyRate.isVisible = true
+                amountsBinding.tvContractLabel.isVisible = false
+                amountsBinding.tvContractValue.isVisible = false
+            }
         }
 
-        amountsBinding.amountbobyView.post {
+        amountsBinding.amountBodyView.post {
             setPeekHeight()
         }
     }
 
-    private fun setIndicateRate() {
-        amountsBinding.rlIndicative.isVisible = true
-        var value =
-            "1 " + localTransferData.selectToAnotherCurrency.currency.currencyCode +
+    private fun setIndicativeRate() {
+        val value =
+            "1 " + localTransferData.senderAccountData.amount.currency.currencyCode +
                     " = " +
                     localTransferData.fxContract?.fxRate.toString() + " " +
-                    localTransferData.selectFromAc.currency.currencyCode
+                    localTransferData.recipientAccountData.amount.currency.currencyCode
 
         amountsBinding.tvIndicativeRate.text = value
-        amountsBinding.tvUsemyrate.setOnClickListener {
-            childFragmentManager.beginTransaction()
-                .add(R.id.v_root, UseMyRateFragment.newInstance(), "UseMyRateFragment")
-                .addToBackStack("UseMyRateFragment")
-                .commit()
-//            openFxContractListView()
-        }
     }
 
     private fun setFxRate(contract: FxOtherRate?) {
@@ -978,69 +1041,41 @@ class InternalFundsTransferFragment : BaseFragment(), AccountListBottomInterface
 
         amountsBinding.tvfxrate.text = value
         amountsBinding.tvContractNo.text = contract?.contractNo
-        amountsBinding.tvEditfxrate.setOnClickListener {
-            openFxContractListView()
+        amountsBinding.tvEditFxRate.setOnClickListener {
+            sharedViewModel.goToUseMyRate()
         }
     }
 
     private fun openFxContractListView() {
-//        val selectFromAc = localTransferData.selectFromAc ?: return
-//        val selectToAc = localTransferData.selectToAc ?: return
-//        val selectToAnotherCurrency = localTransferData.selectToAnotherCurrency ?: return
-//        config.openFxContractListView(
-//            requireContext(),
-//            localTransferData.ownAccountsList,
-//            selectFromAc,
-//            selectedBVFxOtherRate,
-//            selectToAc.amount.value.toString(),
-//            selectToAnotherCurrency.currency.currencyCode,
-//            true,
-//            localTransferData.fucntionCode,
-//            "Select",
-//            object : OnIFTFxContractListener {
-//                override fun onIFTSelectFxContract(data: FxOtherRate?, isManual: Boolean) {
-//                    selectedBVFxOtherRate = data
-//                    setFxRate(data)
-//                    data?.let {
-//                        localTransferData.fxContract = FxContract(
-//                            fxRate = data.rateTier1?.toFloat(),
-//                            fxDate = data.dateMaturity,
-//                            conversionType = "DEBIT",
-//                            rfqTimestampString = data.dateMaturity,
-//                            indicativeAmount = data.originalBuyAmount?.toFloat(),
-//                            dealHubRate = false,
-//                            fxRateTypeCode = "B",
-//                            indicativeRateText = data.outstandingBuyAmount,
-//                            symbol = data.toCurrency,
-//                            contractBuyCurrency = ""
-//                        )
-//                    }
-//                }
-//            })
+
     }
 
     override fun selectAccountItem(type: TransferStatus, item: AccountItemModel) {
         insufficientDialog?.dismiss()
-        updateSelectAccountItem(type, item)
-        detailsBinding.transferfromAccount.text = item.accountNumber + " - " + item.currency
+        updateSelectAccountItem(item)
+        detailsBinding.transferfromAccount.text = item.accountNumber + " - " + item.amount.currency.currencyCode
         detailsBinding.transferfromAccountDesp.text = item.accountName
     }
 
-    private fun updateSelectAccountItem(type: TransferStatus, item: AccountItemModel) {
-        when (type) {
-            TransferStatus.TransferFrom -> {
-                sharedViewModel.updateLocalTransferData(
-                    localTransferData.copy(
-                        selectFromAc = item
-                    )
-                )
-            }
+    private fun updateSelectAccountItem(item: AccountItemModel) {
+        sharedViewModel.updateLocalTransferData(
+            localTransferData.copy(
+                senderAccountData = item
+            )
+        )
 
-            TransferStatus.TransferToMyAccounts -> {
-                localTransferData.copy(
-                    selectToAc = item
-                )
-            }
+        with(amountsBinding.sendCurrencyView) {
+            binding.tvAmount.filters = getInputFilters(item)
+
+            amount = Amount(
+                value = BigDecimal.ZERO,
+                symbol = item.amount.symbol,
+                locale = Locale.ENGLISH,
+                currency = item.amount.currency
+            )
+
+            setCurrencyView(this, item.amount.currency.currencyCode)
+
         }
     }
 

@@ -67,7 +67,7 @@ class LocalTransferServiceMock : LocalTransferServiceInterface {
     }
 
     override suspend fun getCounterFX(code: String): DomainResponse<FxContract, LocalTransferError> {
-        mockDelay(MockDelayDuration.VERY_LONG)
+        mockDelay(MockDelayDuration.LONG)
         val contracts = LocalTransferMockData.getMockUserFXContracts()
         val foundContract = contracts.find { it.contractBuyCurrency == code.uppercase() }
             ?: contracts.first()
@@ -80,56 +80,57 @@ class LocalTransferServiceMock : LocalTransferServiceInterface {
 
     override suspend fun getBeneficiaryList(): DomainResponse<List<BeneficiaryData>, LocalTransferError> {
         return DomainResponse.Success(
-            listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16).map {
-                BeneficiaryData(
-                    id = it.toString(),
-                    isAuthSmsOtp = "1",
-                    orgId = "1",
-                    name = if (it == 4) "OCBC Bank Pte Ltd also if really long max 2 lines and will truncate if it goes beyond the 2 lines" else "Sample User $it",
-                    payType = if (it == 3) "Cindy Chua really long max 2 lines and will truncate if it goes beyond the 2 lines" else "OCBC Bank Pte. Ltd. ",
-                    payDetail = PayDetail(
-                        proxyType = "",
-                        accountNo = "12345678$it",
-                        beneficiaryName = "Cindy Chua",
-                        beneficiaryAddress1 = "",
-                        beneficiaryAddress2 = "",
-                        beneficiaryAddress3 = "",
-                        beneficiaryCity = "",
-                        beneficiaryStreet = "",
-                        beneficiaryPostalCode = "",
-                        beneficiaryResidentStatus = "",
-                        beneficiaryState = "",
-                        beneficiaryTaxId = "",
-                        beneficiaryType = "",
-                        businessRegistrationNo = "",
-                        dialingPrefix = "",
-                        emailAddress = "",
-                        icNumber = "",
-                        passportNo = "",
-                        phoneNumber = "",
-                        armyPoliceNo = "",
-                        uenNumber = "",
-                        virtualPaymentAddress = "",
-                    ),
-                    isLocalBank = it % 2 == 0,
-                    bankDetailDTO = BankDetailDTO(
-                        bankCodeLinkingCd = "",
-                        beneficiaryBankAddress1 = "",
-                        beneficiaryBankAddress2 = "",
-                        beneficiaryBankAddress3 = "",
-                        beneficiaryBankCd = "",
-                        beneficiaryBankCountryCode = "United States",
-                        beneficiaryBankName = "",
-                        clearingCode = "",
-                        swiftCode = "",
-                    ),
-                    statusCode = "",
-                    transactionVersion = "",
-                    customizedStatus = "",
-                    singleAccess = true,
-                    isSelected = false
-                )
-            }
+            listOf()
+//            listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16).map {
+//                BeneficiaryData(
+//                    id = it.toString(),
+//                    isAuthSmsOtp = "1",
+//                    orgId = "1",
+//                    name = if (it == 4) "OCBC Bank Pte Ltd also if really long max 2 lines and will truncate if it goes beyond the 2 lines" else "Sample User $it",
+//                    payType = if (it == 3) "Cindy Chua really long max 2 lines and will truncate if it goes beyond the 2 lines" else "OCBC Bank Pte. Ltd. ",
+//                    payDetail = PayDetail(
+//                        proxyType = "",
+//                        accountNo = "12345678$it",
+//                        beneficiaryName = "Cindy Chua",
+//                        beneficiaryAddress1 = "",
+//                        beneficiaryAddress2 = "",
+//                        beneficiaryAddress3 = "",
+//                        beneficiaryCity = "",
+//                        beneficiaryStreet = "",
+//                        beneficiaryPostalCode = "",
+//                        beneficiaryResidentStatus = "",
+//                        beneficiaryState = "",
+//                        beneficiaryTaxId = "",
+//                        beneficiaryType = "",
+//                        businessRegistrationNo = "",
+//                        dialingPrefix = "",
+//                        emailAddress = "",
+//                        icNumber = "",
+//                        passportNo = "",
+//                        phoneNumber = "",
+//                        armyPoliceNo = "",
+//                        uenNumber = "",
+//                        virtualPaymentAddress = "",
+//                    ),
+//                    isLocalBank = it % 2 == 0,
+//                    bankDetailDTO = BankDetailDTO(
+//                        bankCodeLinkingCd = "",
+//                        beneficiaryBankAddress1 = "",
+//                        beneficiaryBankAddress2 = "",
+//                        beneficiaryBankAddress3 = "",
+//                        beneficiaryBankCd = "",
+//                        beneficiaryBankCountryCode = "United States",
+//                        beneficiaryBankName = "",
+//                        clearingCode = "",
+//                        swiftCode = "",
+//                    ),
+//                    statusCode = "",
+//                    transactionVersion = "",
+//                    customizedStatus = "",
+//                    singleAccess = true,
+//                    isSelected = false
+//                )
+//            }
         )
     }
 
@@ -163,7 +164,11 @@ class LocalTransferServiceMock : LocalTransferServiceInterface {
     ): DomainResponse<SubmitResponseData, LocalTransferError> {
         mockDelay(MockDelayDuration.LONG)
         return DomainResponse.Success(SubmitResponseData())
-//        return DomainResponse.Error(LocalTransferError.SameDayFee)
-//        return DomainResponse.Error(LocalTransferError.ServerResponseError("Not yet implemented"))
     }
+
+    override fun showOldFxRates() {
+
+    }
+
+    override fun useOldFxRatesScreen(): Boolean = false
 }

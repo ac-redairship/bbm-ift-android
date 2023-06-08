@@ -9,15 +9,21 @@ import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFr
 import com.redairship.ocbc.transfer.*
 import com.redairship.ocbc.transfer.domain.LocalTransferError
 import com.redairship.ocbc.transfer.model.*
-import com.redairship.ocbc.transfer.presentation.transfer.local.InternalFundsTransferFragment
 import com.redairship.ocbc.transfer.utils.DomainException
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.math.BigDecimal
 
 class LocalTransferViewModel (
     private val localTransferRepository: LocalTransferCoordinatorInterface
 ) : ViewModel() {
+
+    sealed interface ResponseFlow {
+        object SENDER: ResponseFlow
+        object RECIPIENT: ResponseFlow
+    }
+
+    var responseFlow: ResponseFlow = ResponseFlow.RECIPIENT
+
     private var _accountList = MutableStateFlow<UiState<AccountItemListModel>>(UiState.Loading)
     val accountList: StateFlow<UiState<AccountItemListModel>> = _accountList.asStateFlow()
 
@@ -68,7 +74,8 @@ class LocalTransferViewModel (
         }
     }
 
-    fun getCounterFX(code: String) {
+    fun getCounterFX(isSender: Boolean, code: String, isUserRate: Boolean = false) {
+        responseFlow = if (isSender) ResponseFlow.SENDER else ResponseFlow.RECIPIENT
         viewModelScope.launch {
             localTransferRepository.getCounterFX(code)
                 .catch {
@@ -76,9 +83,11 @@ class LocalTransferViewModel (
                 }
                 .collect {
                     updateLocalTransferData(localTransferData.value!!.copy(
-                        fxContract = it.data
+                        fxContract = it.data?.copy(
+                            isUserRate = isUserRate
+                        )
                     ))
-                    _fxContract.value = it
+                    _fxContract.value = UiState.Success(it.data!!.copy(isUserRate = isUserRate))
                 }
         }
     }
@@ -138,11 +147,8 @@ class LocalTransferViewModel (
     fun doPreSubmit(type: TransactionPreSubmitType) {
         _insufficientBalanceOutcome.value = UiState.Loading
 
-        val selectToAc = localTransferData.value?.selectToAc ?: return
-        if (BigDecimal.valueOf(localTransferData.value!!.defaultMinLimit.toDouble()).movePointLeft(2)
-            > selectToAc.amount.value.movePointLeft(2)
-            || (localTransferData.value!!.selectFromAc.amount.value ?: BigDecimal.ZERO)
-            < selectToAc.amount.value.movePointLeft(2)) {
+        val recipientAccountData = localTransferData.value?.recipientAccountData ?: return
+        if (type != TransactionPreSubmitType.SUBMIT && isValueGreaterThanBalance(recipientAccountData)) {
             _insufficientBalanceOutcome.value = UiState.Error(InsufficientBalanceException())
         } else {
             viewModelScope.launch {
@@ -190,10 +196,18 @@ class LocalTransferViewModel (
             }
 
         }
+
+        _insufficientBalanceOutcome.value = UiState.NotLoading
+
     }
 
-    fun useMyRate() {
-        localTransferRepository.goToUseMyRate()
+    private fun isValueGreaterThanBalance(recipientAccountData: AccountItemModel): Boolean {
+        val localTransferData = localTransferData.value ?: return true
+        val amountToSend = recipientAccountData.amount.value.movePointLeft(2)
+        if (localTransferData.defaultMinLimit.toBigDecimal().movePointLeft(2) > amountToSend) return true
+        if (amountToSend > localTransferData.senderAccountData.amount.value) return true
+
+        return false
     }
 
     fun goToOneTokenVerification() {
@@ -201,7 +215,7 @@ class LocalTransferViewModel (
     }
 
     fun goToEmailVerification(otpFragment: Fragment) {
-
+        localTransferRepository.goToEmailVerification(otpFragment)
     }
 
     fun showGenericErrorScreen(
@@ -228,6 +242,18 @@ class LocalTransferViewModel (
             hasCloseIcon = hasCloseIcon,
             interceptCloseAction = interceptCloseAction
         )
+    }
+
+    fun goToInternalFundsTransfer() {
+        localTransferRepository.goToInternalFundsTransferFragment()
+    }
+
+    fun goToTransactionSummary() {
+        localTransferRepository.goToTransactionSummary()
+    }
+
+    fun goToUseMyRate() {
+        localTransferRepository.goToUseMyRate()
     }
 
 

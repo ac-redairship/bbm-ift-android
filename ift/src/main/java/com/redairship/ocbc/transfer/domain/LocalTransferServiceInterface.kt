@@ -23,4 +23,7 @@ interface LocalTransferServiceInterface: ServiceInterface {
         e2eeDetails: E2EEDetailsResponse,
         type: TransactionPreSubmitType
     ): DomainResponse<SubmitResponseData, LocalTransferError>
+
+    fun useOldFxRatesScreen(): Boolean
+    fun showOldFxRates()
 }

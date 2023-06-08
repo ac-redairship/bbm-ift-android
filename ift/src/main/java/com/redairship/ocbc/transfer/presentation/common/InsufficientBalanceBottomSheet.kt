@@ -10,7 +10,7 @@ import com.ocbc.transfer.databinding.DialogBottomSheetInsufficientBalanceBinding
 import com.redairship.ocbc.bb.components.views.bottomsheet.BBBottomSheet
 
 class InsufficientBalanceBottomSheet : BBBottomSheet() {
-    var onChangeAccountClicked: (() -> Unit)? = null
+    var onChangeAccountClicked: ((Boolean) -> Unit)? = null
 
     lateinit var binding: DialogBottomSheetInsufficientBalanceBinding
 
@@ -23,11 +23,13 @@ class InsufficientBalanceBottomSheet : BBBottomSheet() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tvTitle.text = getString(R.string.insufficient_balance)
+        binding.btChangeaccount.setOnClickListener {
+            dismiss()
+            onChangeAccountClicked?.invoke(true)
+        }
         binding.btOkay.setOnClickListener {
             dismiss()
-        }
-        binding.btChangeaccount.setOnClickListener {
-            onChangeAccountClicked?.invoke()
+            onChangeAccountClicked?.invoke(false)
         }
     }
 

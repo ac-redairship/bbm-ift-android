@@ -16,7 +16,6 @@ object LocalTransferMockData {
     val jpy = Currency.getInstance(Locale("ja", "JP"))
     val nzd = Currency.getInstance(Locale("en", "NZ"))
 
-
     val oneSingleCurrencyAccount = AccountItemListModel(
         accountList = listOf(
             getSingleCurrencyAccount()
@@ -84,8 +83,7 @@ object LocalTransferMockData {
         )
     }
 
-    fun getMultiCurrencyAccount(name: String? = null): AccountItemModel {
-
+    private fun getMultiCurrencyAccount(name: String? = null): AccountItemModel {
         val mockCurrencies = listOf(sgd, usd, hkd, jpy, thb, nzd)
         val mockFrequentlyUsedCurrencies = listOf(usd, sgd, hkd, eur, jpy)
 
@@ -210,6 +208,13 @@ object LocalTransferMockData {
                 indicativeAmount = 98500f,
                 fxRate = 0.92677f,
                 contractBuyCurrency = "AUD",
+                fxDate = Date().toString(),
+                quoteId = "0011223345"
+            ),
+            FxContract(
+                indicativeAmount = 98500f,
+                fxRate = 24f,
+                contractBuyCurrency = "JPY",
                 fxDate = Date().toString(),
                 quoteId = "0011223345"
             )

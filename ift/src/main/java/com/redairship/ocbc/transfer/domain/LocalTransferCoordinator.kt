@@ -2,13 +2,14 @@ package com.redairship.ocbc.transfer.domain
 
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.redairship.ocbc.transfer.presentation.local.TransferActivity
 import com.redairship.domain.AppDomainManagerInterface
 import com.redairship.domain.DomainResponse
 import com.redairship.domain.common.Coordinator
 import com.redairship.domain.common.MainCoordinatorInterface
 import com.redairship.domain.common.types.CaseInfo
+import com.redairship.domain.common.types.OtpInfo
 import com.redairship.domain.common.types.TwoFactorResult
 import com.redairship.domain.common.types.organization.AuthorizedUser
 import com.redairship.domain.common.types.organization.CompanyInfo
@@ -18,18 +19,23 @@ import com.redairship.domain.common.types.personal.AddressInfo
 import com.redairship.domain.common.types.services.BusinessAccount
 import com.redairship.domain.common.types.services.BusinessService
 import com.redairship.domain.getService
+import com.redairship.domain.mock.MockDelayDuration
+import com.redairship.domain.mock.MockDomainConfiguration
+import com.redairship.domain.mock.MockKey
+import com.redairship.domain.mock.mockDelay
 import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFragment
 import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageType
 import com.redairship.ocbc.transfer.LocalTransferCoordinatorInterface
 import com.redairship.ocbc.transfer.LocalTransferData
 import com.redairship.ocbc.transfer.UiState
 import com.redairship.ocbc.transfer.model.*
-import com.redairship.ocbc.transfer.presentation.common.UseMyRateFragment
+import com.redairship.ocbc.transfer.presentation.common.TransferConfirmFragment
+import com.redairship.ocbc.transfer.presentation.transfer.transferto.UseMyRateFragment
+import com.redairship.ocbc.transfer.presentation.local.TransferActivity
+import com.redairship.ocbc.transfer.presentation.transfer.local.InternalFundsTransferFragment
 import com.redairship.ocbc.transfer.utils.flowFromAppDomain
 import com.redairship.ocbc.transfer.utils.flowFromAppDomain2
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
-
 
 class LocalTransferCoordinator(
     private val appDomainManager: AppDomainManagerInterface,
@@ -41,6 +47,14 @@ class LocalTransferCoordinator(
         appDomainManager.serviceCentre().getService<LocalTransferServiceInterface>()
     }
     override var localTransferData: LocalTransferData = LocalTransferData()
+
+    override fun goToInternalFundsTransferFragment() {
+        coordinator.navigateTo(InternalFundsTransferFragment(), true)
+    }
+
+    override fun goToTransactionSummary() {
+        coordinator.navigateTo(TransferConfirmFragment(), true)
+    }
 
     override suspend fun getAccountList(functionCode: String): Flow<UiState<AccountItemListModel>> = flowFromAppDomain {
         service.getAccountList(functionCode)
@@ -103,18 +117,25 @@ class LocalTransferCoordinator(
     }
 
     override fun start(vararg args: Any) {
+//        coordinator.navigateTo(TransferEntryFragment(), true)
         context.startActivity(Intent(context, TransferActivity::class.java).apply {
-            putExtra("jump_to", args[0].toString())
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         })
     }
 
+    override fun useOldFxRatesScreen(): Boolean = service.useOldFxRatesScreen()
 
     override fun goToUseMyRate() {
-        coordinator.navigateTo(UseMyRateFragment.newInstance(), false)
+        if (useOldFxRatesScreen()) {
+            Toast.makeText(context, "Go to existing fx rates", Toast.LENGTH_SHORT).show()
+            service.showOldFxRates()
+        } else {
+            coordinator.navigateTo(UseMyRateFragment.newInstance(), true)
+        }
     }
 
     override fun verifyOtp(otp: String) = flowFromAppDomain2 {
+        mockDelay(MockDelayDuration.LONG)
         return@flowFromAppDomain2 DomainResponse.Success(
             TwoFactorResult(
                 isSuccessful = true,
@@ -243,5 +264,13 @@ class LocalTransferCoordinator(
             },
             addToBackStack = true
         )
+    }
+
+    override fun resendOtp() = flowFromAppDomain {
+        val otpInfo =
+            otpInfo ?: return@flowFromAppDomain DomainResponse.Error(PassportAuthStatus.Default)
+        passportAuthService.resendOtp(otpInfo)
+    }.onEach {
+        otpInfo = it
     }
 }

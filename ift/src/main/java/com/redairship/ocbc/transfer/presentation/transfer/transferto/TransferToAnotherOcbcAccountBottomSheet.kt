@@ -19,7 +19,8 @@ import com.redairship.ocbc.transfer.presentation.local.LocalTransferViewModel
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_another_ocbc_ac.*
 import java.util.*
 
-class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_components_BBBottomSheetDialogThemeNoBackground) {
+class TransferToAnotherOcbcAccountBottomSheet : BBBottomSheet(R.style.ras_components_BBBottomSheetDialogThemeNoBackground) {
+    private var defaultPeekHeight: Int = 0
     private var isFromPayeeList: Boolean = false
     var onSelectNextClicked: (() -> Unit)? = null
     val sharedViewModel: LocalTransferViewModel by activityViewModels()
@@ -53,9 +54,14 @@ class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_comp
 
     private fun setupViews() {
         isCancelable = false
+        isDraggable = false
         binding.bottomsheetAnotherOcbcSubmit.isEnabled = false
         binding.tfBottomsheetAnotherOcbcAcNumber.setInputType(InputType.TYPE_CLASS_NUMBER)
+    }
 
+    override fun onShow() {
+        super.onShow()
+        defaultPeekHeight = behavior?.peekHeight ?: 0
     }
 
     private fun setupViewEvents() {
@@ -64,7 +70,7 @@ class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_comp
                 dismiss()
                 sharedViewModel.updateLocalTransferData(
                     localTransferData.copy(
-                        selectToAc = localTransferData.selectToAc.copy(
+                        recipientAccountData = localTransferData.recipientAccountData.copy(
                             currency = Currency.getInstance("SGD")
                         )
                     )
@@ -98,14 +104,14 @@ class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_comp
                         binding.tfBottomsheetAnotherOcbcAcNumber.isError = false
                         sharedViewModel.updateLocalTransferData(
                             localTransferData.copy(
-                                selectToAc = localTransferData.selectToAc.copy(
+                                recipientAccountData = localTransferData.recipientAccountData.copy(
                                     accountNumber = toAccount.toString()
                                 )
                             )
                         )
                         checkAccountPayeeData()
                     }
-                    toAccount.toString() == localTransferData.selectFromAc.accountNumber -> {
+                    toAccount.toString() == localTransferData.senderAccountData.accountNumber -> {
                         binding.tfBottomsheetAnotherOcbcAcNumber.errorText =
                             "Beneficiary account number cannot be the same as the debit account number"
                         binding.tfBottomsheetAnotherOcbcAcNumber.isError = true
@@ -135,11 +141,20 @@ class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_comp
             }
 
             override fun afterTextChanged(editable: Editable?) {
+                editable?.let { s ->
+                    for (i in s.length - 1 downTo 0) {
+                        if (s[i] == '\n') {
+                            s.delete(i, i + 1)
+                            return
+                        }
+                    }
+                }
+
                 if (isNameValid(editable.toString())) {
                     binding.tfBottomsheetAnotherOcbcPayeeName.isError = false
                     sharedViewModel.updateLocalTransferData(
                         localTransferData.copy(
-                            selectToAc = localTransferData.selectToAc.copy(
+                            recipientAccountData = localTransferData.recipientAccountData.copy(
                                 bankName = editable.toString()
                             )
                         )
@@ -161,7 +176,7 @@ class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_comp
         tf_bottomsheet_another_ocbc_payee_name.text = data.name
         sharedViewModel.updateLocalTransferData(
             localTransferData.copy(
-                selectToAc = localTransferData.selectToAc.copy(
+                recipientAccountData = localTransferData.recipientAccountData.copy(
                     accountNumber = data.payDetail.accountNo,
                     accountName = data.name,
                     displayName = data.payDetail.beneficiaryName,
@@ -179,8 +194,8 @@ class TransferToAnotherOcbcAccountBottomSheet() : BBBottomSheet(R.style.ras_comp
     }
 
     private fun checkAccountPayeeData() {
-        val selectToAc = localTransferData.selectToAc
-        if (selectToAc.accountNumber.isNotEmpty() && selectToAc.bankName.isNotEmpty()) {
+        val recipientAccountData = localTransferData.recipientAccountData
+        if (recipientAccountData.accountNumber.isNotEmpty() && recipientAccountData.bankName.isNotEmpty()) {
             binding.bottomsheetAnotherOcbcSubmit.isEnabled = true
         }
     }

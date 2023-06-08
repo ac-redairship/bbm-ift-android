@@ -133,7 +133,7 @@
                 app:layout_constraintTop_toBottomOf="@id/account_name" />
 
             <LinearLayout
-                android:id="@+id/amountboby_view_shimmer"
+                android:id="@+id/amount_body_view_shimmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -241,7 +241,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/amountboby_view"
+                android:id="@+id/amount_body_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
@@ -300,7 +300,7 @@
                 android:visibility="gone">
 
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                    android:id="@+id/label_indicativerate"
+                    android:id="@+id/label_indicative_rate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
@@ -311,18 +311,18 @@
 
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
                     android:id="@+id/tvIndicativeRate"
-                    app:layout_constraintStart_toEndOf="@+id/label_indicativerate"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/label_indicativerate"
+                    app:layout_constraintStart_toEndOf="@+id/label_indicative_rate"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/label_indicative_rate"
                     android:layout_marginStart="@dimen/ras_components_bb_spacing_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/ras_components_bb_color_white"
-                    android:layout_toRightOf="@id/label_indicativerate"
+                    android:layout_toRightOf="@id/label_indicative_rate"
                     android:text="test"
                     app:ras_components_textWeight="bold" />
 
                 <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                    android:id="@+id/tvUsemyrate"
+                    android:id="@+id/tv_use_my_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/ras_components_bb_color_white"

@@ -103,131 +103,141 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:ras_components_textWeight="regular" />
 
-
-                <RelativeLayout
+                <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:id="@+id/v_item_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <LinearLayout
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
+                            android:orientation="vertical">
+
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1,000.00 USD available"
+                                android:textSize="@dimen/ras_components_bb_text_size_16_sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="semi_bold" />
+
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1 USD = 1.5643 SGD"
+                                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="regular" />
+
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                                android:text="Value Date: 27 Jan 2023"
+                                android:textColor="@color/ras_components_bb_color_grey_700"
+                                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="regular" />
+
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Reference No: 35568625"
+                                android:textColor="@color/ras_components_bb_color_grey_700"
+                                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="regular" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/cb_item_1"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
+                            android:src="@drawable/ic_radio_checked" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/v_item_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large">
 
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1,000.00 USD available"
-                            android:textSize="@dimen/ras_components_bb_text_size_16_sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="semi_bold" />
-
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1 USD = 1.5643 SGD"
-                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="regular" />
-
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
-                            android:text="Value Date: 27 Jan 2023"
-                            android:textColor="@color/ras_components_bb_color_grey_700"
-                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="regular" />
+                            android:orientation="vertical">
 
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Reference No: 35568625"
-                            android:textColor="@color/ras_components_bb_color_grey_700"
-                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="regular" />
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2,150.00 USD available"
+                                android:textSize="@dimen/ras_components_bb_text_size_16_sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="semi_bold" />
 
-                    </LinearLayout>
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1 USD = 1.5565 SGD"
+                                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="regular" />
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large"
-                        android:src="@drawable/ic_radio_checked" />
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
+                                android:text="Value Date: 27 Jan 2023"
+                                android:textColor="@color/ras_components_bb_color_grey_700"
+                                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="regular" />
 
-                </RelativeLayout>
+                            <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Reference No: 35568625"
+                                android:textColor="@color/ras_components_bb_color_grey_700"
+                                android:textSize="@dimen/ras_components_bb_text_size_14_sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:ras_components_textWeight="regular" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/ras_components_bb_spacing_extreme_large">
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/cb_item_2"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:src="@drawable/ic_radio_unchecked" />
 
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2,150.00 USD available"
-                            android:textSize="@dimen/ras_components_bb_text_size_16_sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="semi_bold" />
+                    </RelativeLayout>
 
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1 USD = 1.5565 SGD"
-                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="regular" />
+                </RadioGroup>
 
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/ras_components_bb_spacing_normal"
-                            android:text="Value Date: 27 Jan 2023"
-                            android:textColor="@color/ras_components_bb_color_grey_700"
-                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="regular" />
 
-                        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Reference No: 35568625"
-                            android:textColor="@color/ras_components_bb_color_grey_700"
-                            android:textSize="@dimen/ras_components_bb_text_size_14_sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:ras_components_textWeight="regular" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:src="@drawable/ic_radio_unchecked" />
-
-                </RelativeLayout>
             </LinearLayout>
 
         </ScrollView>

@@ -97,7 +97,7 @@ class TransferEntryFragment : BaseTransferFragment<TransferFragmentEntryBinding>
     override fun setViewData(transfertype: TransferStatus?) {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             delay(100)
-            if (sharedViewModel.localTransferData.value?.selectFromAc?.accountName.isNullOrEmpty())
+            if (sharedViewModel.localTransferData.value?.senderAccountData?.accountName.isNullOrEmpty())
                 openTransferFromBottomView()
         }
     }
@@ -116,7 +116,7 @@ class TransferEntryFragment : BaseTransferFragment<TransferFragmentEntryBinding>
 
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1000)
-            if (sharedViewModel.localTransferData.value?.selectToAc?.accountName.isNullOrEmpty())
+            if (sharedViewModel.localTransferData.value?.recipientAccountData?.accountName.isNullOrEmpty())
                 openTransferToBottomView()
         }
     }
@@ -132,15 +132,15 @@ class TransferEntryFragment : BaseTransferFragment<TransferFragmentEntryBinding>
 
     override fun selectTransferTo(item: TransferToTypeResponse) {
         binding.btTransferTo.label = item.itemName
-        val selectFromAc = sharedViewModel.localTransferData.value?.selectFromAc
+        val senderAccountData = sharedViewModel.localTransferData.value?.senderAccountData
 
         when(item.type) {
             TransferStatus.TransferToMyAccounts.name -> {
-                selectFromAc ?: return
+                senderAccountData ?: return
                 sharedViewModel.updateProductCode(PRODUCT_CODE_InternalTransferOwnAcc)
                 MyAccountListBottomSheet.newInstance(
                     TransferStatus.TransferToMyAccounts,
-                    selectFromAc,
+                    senderAccountData,
                     this@TransferEntryFragment
                 )
                     .apply {
@@ -152,11 +152,11 @@ class TransferEntryFragment : BaseTransferFragment<TransferFragmentEntryBinding>
                 openAnotherOcbcBankAcBottomSheet()
             }
             TransferStatus.TransferToOtherBank.name -> {
-                selectFromAc ?: return
+                senderAccountData ?: return
                 // go to existing "other bank" function
             }
             TransferStatus.TransferToUEN.name -> {
-                selectFromAc ?: return
+                senderAccountData ?: return
                 // go to existing "Mobile / NRIC / UEN" function
             }
         }
@@ -176,9 +176,9 @@ class TransferEntryFragment : BaseTransferFragment<TransferFragmentEntryBinding>
 
     private fun openTransferToMyAcNextButtonBottomSheet() = with(binding.vBottomSheetContent) {
         bottomsheetTitle.text = getString(R.string.account_details)
-        bottomsheet_desc.text = localTransferData.selectToAc.accountName
+        bottomsheet_desc.text = localTransferData.recipientAccountData.accountName
         bottomsheet_submit.setOnClickListener {
-            findNavController().navigate(TransferEntryFragmentDirections.actiontodetail())
+            sharedViewModel.goToInternalFundsTransfer()
         }
         bottomSheetBehaviorId.isVisible = true
     }
@@ -194,7 +194,7 @@ class TransferEntryFragment : BaseTransferFragment<TransferFragmentEntryBinding>
                 Log.e("EntryFragment", e.message, e)
             }
             try {
-                sharedViewModel.updateLocalTransferData(localTransferData.copy(selectToAc = localTransferData.selectToAc.copy(currency = Currency.getInstance("SGD"))))
+                sharedViewModel.updateLocalTransferData(localTransferData.copy(recipientAccountData = localTransferData.recipientAccountData.copy(currency = Currency.getInstance("SGD"))))
             } catch (e: Exception) {
                 Log.e("EntryFragment", e.message, e)
             }

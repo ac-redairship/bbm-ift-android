@@ -51,7 +51,7 @@ class InternalFundsTransferDetailsFragment() : BBBottomSheet(R.style.ras_compone
                 sharedViewModel.localTransferData.value?.let { localTransferData ->
                     sharedViewModel.updateLocalTransferData(
                         localTransferData.copy(
-                            selectToAc = localTransferData.selectToAc.copy(
+                            recipientAccountData = localTransferData.recipientAccountData.copy(
                                 currency = Currency.getInstance("SGD")
                             )
                         )
@@ -87,14 +87,14 @@ class InternalFundsTransferDetailsFragment() : BBBottomSheet(R.style.ras_compone
                         binding.tfBottomsheetAnotherOcbcAcNumber.isError = false
                         sharedViewModel.updateLocalTransferData(
                             localTransferData.copy(
-                                selectToAc = localTransferData.selectToAc.copy(
+                                recipientAccountData = localTransferData.recipientAccountData.copy(
                                     accountNumber = toAccount.toString()
                                 )
                             )
                         )
                         checkAccountPayeeData()
                     }
-                    toAccount.toString() == localTransferData.selectFromAc.accountNumber -> {
+                    toAccount.toString() == localTransferData.senderAccountData.accountNumber -> {
                         binding.tfBottomsheetAnotherOcbcAcNumber.errorText =
                             "Beneficiary account number cannot be the same as the debit account number"
                         binding.tfBottomsheetAnotherOcbcAcNumber.isError = true
@@ -127,7 +127,7 @@ class InternalFundsTransferDetailsFragment() : BBBottomSheet(R.style.ras_compone
                     binding.tfBottomsheetAnotherOcbcPayeeName.isError = false
                     sharedViewModel.updateLocalTransferData(
                         localTransferData.copy(
-                            selectToAc = localTransferData.selectToAc.copy(
+                            recipientAccountData = localTransferData.recipientAccountData.copy(
                                 bankName = editable.toString()
                             )
                         )
@@ -156,8 +156,8 @@ class InternalFundsTransferDetailsFragment() : BBBottomSheet(R.style.ras_compone
     }
 
     private fun checkAccountPayeeData() {
-        val selectToAc = sharedViewModel.localTransferData.value?.selectToAc ?: return
-        if (selectToAc.accountNumber.isNotEmpty() && selectToAc.bankName.isNotEmpty()) {
+        val recipientAccountData = sharedViewModel.localTransferData.value?.recipientAccountData ?: return
+        if (recipientAccountData.accountNumber.isNotEmpty() && recipientAccountData.bankName.isNotEmpty()) {
             binding.bottomsheetAnotherOcbcSubmit.isEnabled = true
         }
     }

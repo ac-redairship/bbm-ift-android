@@ -1,16 +1,15 @@
 package com.redairship.ocbc.transfer.presentation.transfer.local.otp
 
-import android.content.Context
-import android.hardware.Camera
-import android.nfc.NfcManager
 import android.os.Build
+import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Html
 import android.text.format.DateUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.lifecycle.coroutineScope
-import com.redairship.ocbc.bb.components.utils.DeviceUtils
 import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageFragment
 import com.redairship.ocbc.bb.components.views.fragments.errors.GenericMessageType
 import com.redairship.ocbc.bb.components.views.fragments.otp.OTPFragment
@@ -21,9 +20,6 @@ import java.util.concurrent.TimeUnit
 class EmailOTPFragment : OTPFragment(), GenericMessageFragment.Listener {
 
     private val viewModel: OTPViewModel by sharedViewModel()
-    private val nfcManager: NfcManager by lazy { requireContext().getSystemService(Context.NFC_SERVICE) as NfcManager }
-    private var hasCamera = true
-    private var hasNfc = true
 
     companion object {
         @JvmStatic
@@ -148,12 +144,7 @@ class EmailOTPFragment : OTPFragment(), GenericMessageFragment.Listener {
     }
 
     override fun onGenericMessageDoneButtonClicked(fragment: GenericMessageFragment) {
-        if (!hasNfc) {
-            viewModel.goToScheduleVideoCall()
-        } else {
-//            GetInTouchDialog.newInstance()
-//                .show(childFragmentManager, GetInTouchDialog::class.java.simpleName)
-        }
+
     }
 
 

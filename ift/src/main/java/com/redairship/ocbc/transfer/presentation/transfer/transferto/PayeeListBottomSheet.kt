@@ -13,12 +13,13 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ocbc.transfer.databinding.DialogBottomSheetPayeeListBinding
+import com.redairship.ocbc.bb.components.extensions.toPx
 import com.redairship.ocbc.bb.components.views.bottomsheet.BBBottomSheet
 import com.redairship.ocbc.transfer.UiState
 import com.redairship.ocbc.transfer.model.BeneficiaryData
 import com.redairship.ocbc.transfer.presentation.localtransfer.transferto.PayeeListAdapter
-import com.redairship.ocbc.transfer.presentation.localtransfer.transferto.PayeeListBottomSheetViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -35,7 +36,7 @@ class PayeeListBottomSheet(private val selectedPayee: BeneficiaryData?) : BBBott
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isCollapsible = false
+        isCollapsible = true
     }
 
     override fun getContentView(
@@ -51,7 +52,7 @@ class PayeeListBottomSheet(private val selectedPayee: BeneficiaryData?) : BBBott
 
     override fun onShow() {
         val behavior = behavior ?: return
-        behavior.peekHeight = resources.displayMetrics.heightPixels
+//        behavior.peekHeight = resources.displayMetrics.heightPixels
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -143,14 +144,24 @@ class PayeeListBottomSheet(private val selectedPayee: BeneficiaryData?) : BBBott
         }
         adapter.submitList(list)
         if (list.isEmpty()) {
+            binding.searchBody.isVisible = false
             binding.vErrorContainer.isVisible = true
             binding.ivErrorMessage.isVisible = true
             binding.tvErrorMessage.text = "Placeholder, copy will be soon finalised"
+            binding.recyclerview.isVisible = false
+            setPeekHeight()
+        } else {
+            binding.recyclerview.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            binding.recyclerview.adapter = adapter
+            adapter.notifyDataSetChanged()
         }
-        binding.recyclerview.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerview.adapter = adapter
-        adapter.notifyDataSetChanged()
+
+    }
+
+    private fun setPeekHeight() {
+        behavior?.peekHeight = 300.toPx
+        behavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun selectItem(item: BeneficiaryData) {

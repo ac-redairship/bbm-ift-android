@@ -46,6 +46,8 @@ ext {
 dependencies {
     implementation project(":bbm-domain-android")
     implementation project(':bbm-components-android')
+    implementation project(':bbm-onetokenoffline')
+    implementation project(':bbm-onetokenoffline:domain')
     implementation 'androidx.fragment:fragment-ktx:1.3.6'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "io.insert-koin:koin-android:$koin_version"

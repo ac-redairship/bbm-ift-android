@@ -17,5 +17,6 @@ data class FxContract(
     val modeOfContract: String? = null,
     val indicativeRateText: String? = null,
     val symbol: String? = null,
-    val contractBuyCurrency: String? = null
+    val contractBuyCurrency: String? = null,
+    val isUserRate: Boolean = false,
 ) : Serializable

@@ -19,7 +19,6 @@
         android:id="@+id/v_details"
         layout="@layout/bottom_sheet_internal_funds_transfer_details"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

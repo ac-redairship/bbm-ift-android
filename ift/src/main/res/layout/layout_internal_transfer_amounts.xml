@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@id/account_name" />
 
     <LinearLayout
-        android:id="@+id/amountboby_view_shimmer"
+        android:id="@+id/amount_body_view_shimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -142,11 +142,11 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/amountboby_view"
+        android:id="@+id/amount_body_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/ras_components_bb_spacing_very_large"
-        app:cardBackgroundColor="@color/ras_components_bb_color_white_opacity_30"
+        app:cardBackgroundColor="@color/ras_components_bb_color_white_opacity_20"
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp">
 
@@ -190,7 +190,7 @@
             android:layout_height="2dp"
             android:layout_gravity="bottom"
             android:background="@color/ras_components_bb_color_white"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:visibility="visible" />
     </androidx.cardview.widget.CardView>
 
@@ -216,12 +216,13 @@
         tools:visibility="visible">
 
         <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-            android:id="@+id/label_indicativerate"
+            android:id="@+id/label_indicative_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/ras_components_bb_spacing_very_large"
+            android:layout_marginStart="@dimen/ras_components_bb_spacing_very_large"
             android:text="@string/indicative_rate_percentage"
             android:textColor="@color/ras_components_bb_color_white"
+            android:textSize="@dimen/ras_components_bb_text_size_12_sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -229,24 +230,99 @@
             android:id="@+id/tvIndicativeRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ras_components_bb_spacing_small"
-            android:layout_toRightOf="@id/label_indicativerate"
+            android:layout_marginStart="@dimen/ras_components_bb_spacing_very_small"
+            android:layout_toRightOf="@id/label_indicative_rate"
             android:text="test"
             android:textColor="@color/ras_components_bb_color_white"
-            app:layout_constraintBaseline_toBaselineOf="@+id/label_indicativerate"
-            app:layout_constraintStart_toEndOf="@+id/label_indicativerate"
+            android:textSize="@dimen/ras_components_bb_text_size_12_sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/label_indicative_rate"
+            app:layout_constraintStart_toEndOf="@+id/label_indicative_rate"
             app:ras_components_textWeight="bold" />
 
         <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-            android:id="@+id/tvUsemyrate"
+            android:id="@+id/tv_contract_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ras_components_bb_spacing_very_large"
+            android:layout_marginTop="@dimen/ras_components_bb_spacing_small"
+            android:text="Contract no."
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@+id/tvIndicativeRate"
+            android:textColor="@color/ras_components_bb_color_white"
+            android:textSize="@dimen/ras_components_bb_text_size_12_sp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_contract_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ras_components_bb_spacing_very_small"
+            android:text="test"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textColor="@color/ras_components_bb_color_white"
+            android:textSize="@dimen/ras_components_bb_text_size_12_sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_contract_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_contract_label"
+            app:ras_components_textWeight="bold" />
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_use_my_rate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvIndicativeRate"
-            android:layout_marginLeft="@dimen/ras_components_bb_spacing_very_large"
+            android:layout_marginStart="@dimen/ras_components_bb_spacing_very_large"
             android:layout_marginTop="@dimen/ras_components_bb_spacing_small"
             android:text="@string/use_my_rate"
             android:textColor="@color/ras_components_bb_color_white"
+            android:textSize="@dimen/ras_components_bb_text_size_12_sp"
             app:layout_constraintTop_toBottomOf="@+id/tvIndicativeRate" />
+
+        <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
+            android:id="@+id/tv_edit_fx_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginEnd="@dimen/ras_components_bb_spacing_very_large"
+            android:text="@string/edit_fx_rate"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/ras_components_bb_color_white"
+            android:textSize="@dimen/ras_components_bb_text_size_12_sp"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/v_indicative_rate_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ras_components_bb_spacing_very_large"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_width="204dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/ras_dashboard_shape_rectangle_radius_4"
+                    app:layout_constraintStart_toStartOf="@+id/label_indicative_rate"
+                    app:layout_constraintTop_toTopOf="@+id/label_indicative_rate" />
+
+                <View
+                    android:layout_width="75dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:background="@drawable/ras_dashboard_shape_rectangle_radius_4" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
@@ -271,7 +347,7 @@
             app:ras_components_textWeight="bold" />
 
         <com.redairship.ocbc.bb.components.views.textviews.BBOpenSansTextView
-            android:id="@+id/tvEditfxrate"
+            android:id="@+id/tvEditfxrate2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
